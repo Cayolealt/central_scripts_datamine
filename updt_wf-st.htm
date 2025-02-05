@@ -1,0 +1,939 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<HTML>
+<HEAD>
+<META Name="DatamineScript" Content="Version3" />
+<TITLE>Command Automatically recorded html script.</TITLE>
+<SCRIPT TYPE="text/javascript">
+
+// ----------------------------------------------------------------------
+// Standard initialisation for Datamine Studio 3
+//
+var oDmApp= null;
+var oDmFile= null;
+var oScript = null;
+var oDmBrowser = null;
+
+function AutoConnect()
+{
+    try {
+	  oScript = new ActiveXObject("StudioCommon.ScriptHelper");
+	  oScript.initialize(window);
+	  oDmApp = oScript.getApplication();
+	  dmdir=oDmApp.ActiveProject.Folder;
+	  oDmBrowser = oDmApp.ActiveProject.Browser;
+	  oDmFile = new ActiveXObject("DmFile.DmTableADO");
+
+	  fso = new ActiveXObject("Scripting.FileSystemObject");
+
+	  
+      if (oDmApp == null || oDmApp.ActiveProject == null)    //Attempt to Use the Active Datamine Session
+      {
+         alert("There are no active projects open.\n Please open a project before continuing.");
+         window.close();                                                     // Closes the script window
+	 return false;
+      }
+      else
+      {
+         document.getElementById("logo").src = oDmApp.Options.HtmlFolder + "\\images\\Datamine_rgb_small.png";
+	 return true;
+      }
+   } 
+   catch(e) {
+      alert("Failed\nReason: " + e.description);
+      if ( oDmApp) oDmApp.Quit(); // release the session to close it down
+   }	
+   return false;		
+}
+
+
+
+	function abre_wtr() {
+	// Abre o arquivo de triângulos do wireframe de minério completo
+	oDmBrowser.TypeFilter = oScript.DmFileType.dmWireframe;
+	oDmBrowser.Show(false);
+	wtr.value=oDmBrowser.FileName;
+	}
+	function abre_wpt() {
+	// Abre o arquivo de pontos do wireframe de minério completo
+	oDmBrowser.TypeFilter = oScript.DmFileType.dmWireframePoint;
+	oDmBrowser.Show(false);
+	wpt.value=oDmBrowser.FileName;
+	}
+	function abre_wtr1() {
+	// Abre o arquivo de triângulos do wireframe de minério 1 editado
+	oDmBrowser.TypeFilter = oScript.DmFileType.dmWireframe;
+	oDmBrowser.Show(false);
+	wtr1.value=oDmBrowser.FileName;
+	}
+	function abre_wpt1() {
+	// Abre o arquivo de pontos do wireframe de minério 1 editado
+	oDmBrowser.TypeFilter = oScript.DmFileType.dmWireframePoint;
+	oDmBrowser.Show(false);
+	wpt1.value=oDmBrowser.FileName;
+	}	
+	function abre_wtr2() {
+	// Abre o arquivo de triângulos do wireframe de minério 2 editado
+	oDmBrowser.TypeFilter = oScript.DmFileType.dmWireframe;
+	oDmBrowser.Show(false);
+	wtr2.value=oDmBrowser.FileName;
+	}
+	function abre_wpt2() {
+	// Abre o arquivo de pontos do wireframe de minério 2 editado
+	oDmBrowser.TypeFilter = oScript.DmFileType.dmWireframePoint;
+	oDmBrowser.Show(false);
+	wpt2.value=oDmBrowser.FileName;
+	}	
+	function abre_wtr3() {
+	// Abre o arquivo de triângulos do wireframe de minério 3 editado
+	oDmBrowser.TypeFilter = oScript.DmFileType.dmWireframe;
+	oDmBrowser.Show(false);
+	wtr3.value=oDmBrowser.FileName;
+	}
+	function abre_wpt3() {
+	// Abre o arquivo de pontos do wireframe de minério 3 editado
+	oDmBrowser.TypeFilter = oScript.DmFileType.dmWireframePoint;
+	oDmBrowser.Show(false);
+	wpt3.value=oDmBrowser.FileName;
+	}
+
+	function open_stt() {
+	// Abre a string de liberação do planejamento
+	oDmBrowser.TypeFilter = oScript.DmFileType.dmString;
+	oDmBrowser.Show(false);
+	stt.value=oDmBrowser.FileName;
+	}
+	function open_st1() {
+	// Abre a string de liberação do planejamento
+	oDmBrowser.TypeFilter = oScript.DmFileType.dmString;
+	oDmBrowser.Show(false);
+	st1.value=oDmBrowser.FileName;
+	}
+	function open_st2() {
+	// Abre a string de liberação do planejamento
+	oDmBrowser.TypeFilter = oScript.DmFileType.dmString;
+	oDmBrowser.Show(false);
+	st2.value=oDmBrowser.FileName;
+	}
+	function open_st3() {
+	// Abre a string de liberação do planejamento
+	oDmBrowser.TypeFilter = oScript.DmFileType.dmString;
+	oDmBrowser.Show(false);
+	st3.value=oDmBrowser.FileName;
+	}
+
+	
+	function btnExecute1_onclick()
+	{
+	try	{
+		
+	
+	;
+
+	oDmApp.ParseCommand("unload-all-data");
+	document.getElementById('lente1').disabled=true;
+	document.getElementById('lente2').disabled=true;
+	document.getElementById('lente3').disabled=true;
+	var lente1, lente2, lente3;
+	lente1 = document.getElementById('lente1').value
+	lente2 = document.getElementById('lente2').value
+	lente3 = document.getElementById('lente3').value
+	
+
+	// Separa a primeira lente do arquivo total
+	oDmApp.ParseCommand("extra &IN="+wtr.value+" &OUT=_temp1tr @APPROX=0 @PRINT=1 "+" 'IF(LENTE!=\""+lente1+"\")' "+" 'DELETE()' "+" 'END' "+" 'GO'");
+	oDmApp.ParseCommand("extra &IN="+wtr.value+" &OUT=_temp_tt1tr @APPROX=0 @PRINT=1 "+" 'IF(LENTE==\""+lente1+"\")' "+" 'DELETE()' "+" 'END' "+" 'GO'");
+	oDmApp.ParseCommand("copy  &IN="+wpt.value+" &OUT=_temp1ttpt");
+	oDmApp.ParseCommand("chktri &WIRETRIN=_temp1tr &WIREPTIN=_temp1ttpt &WIRETROU="+lente1+"tr &WIREPTOU="+lente1+"pt @REMDUPID=0");	
+	oDmApp.ParseCommand("trivol &WIRETR="+lente1+"tr &WIREPT="+lente1+"pt &OUT=vol_"+lente1+"_old @ZBASE=-200 @NOSID=1 @DTM=0");		
+	oDmApp.ParseCommand("output &IN=vol_"+lente1+"_old *F1=LENTE *F2=VOLUME *F3=NUMTRI @CSV=1 @NODD=0 @DPLACE=-1 @IMPLICIT=0 "+" 'vol_"+lente1+"_old.csv'");		
+	oDmApp.ParseCommand("extra &IN="+stt.value+" &OUT="+lente1+"st @APPROX=0 @PRINT=1 "+" 'IF(LENTE!=\""+lente1+"\")' "+" 'DELETE()' "+" 'END' "+" 'GO'");
+	oDmApp.ParseCommand("extra &IN="+stt.value+" &OUT=_temp_tt1st @APPROX=0 @PRINT=1 "+" 'IF(LENTE==\""+lente1+"\")' "+" 'DELETE()' "+" 'END' "+" 'GO'");
+	oDmFile.Open(""+lente1+"tr.dm",true);
+	oDmFile.MoveFirst();
+	_temp_mine    = oDmFile.GetColumn(5);
+	_temp_setor   = oDmFile.GetColumn(6);
+	_temp_serie   = oDmFile.GetColumn(7);
+	_temp_orebody = oDmFile.GetColumn(8);
+	_temp_lente  = oDmFile.GetColumn(9);
+	_temp_colour  = oDmFile.GetColumn(10);
+	_temp_group   = oDmFile.GetColumn(11);
+	_temp_surface = oDmFile.GetColumn(12);
+	_temp_otype   = oDmFile.GetColumn(13);
+	oDmFile.Close();
+	oDmApp.ParseCommand("inpfil  &OUT=dados_"+lente1+"      @PRINT=1 "+" '' "+" 'MINE' "+" 'A' "+" '2' "+" 'Y' "+" 'A' "+" 'SETOR' "+" 'A' "+" '8' "+" 'Y' "+" 'A' "+" 'SERIE'  "+" 'N' "+" 'Y' "+" '1' "+" 'OREBODY'  "+" 'N' "+" 'Y' "+" '1' "+" 'LENTE' "+" 'A' "+" '8' "+" 'Y' "+" 'A' "+" 'COLOUR'  "+" 'N' "+" 'Y' "+" '1' "+" 'GROUP'  "+" 'N' "+" 'Y' "+" '1' "+" 'SURFACE'  "+" 'N' "+" 'Y' "+" '1' "+" 'OTYPE' "+" 'A' "+" '8' "+" 'Y' "+" 'A' "+" '!' "+" 'y' "+" '' "+" '"+_temp_mine+","+_temp_setor+","+_temp_serie+","+_temp_orebody+","+_temp_lente+","+_temp_colour+","+_temp_group+","+_temp_surface+","+_temp_otype+"' "+" '!' ");
+	
+	
+	
+	if(tem_mais1.checked==true){
+	oDmApp.ParseCommand("extra &IN="+wtr.value+" &OUT=_temp2tr @APPROX=0 @PRINT=1 "+" 'IF(LENTE!=\""+lente2+"\")' "+" 'DELETE()' "+" 'END' "+" 'GO'");
+	oDmApp.ParseCommand("extra &IN=_temp_tt1tr &OUT=_temp_tt2tr @APPROX=0 @PRINT=1 "+" 'IF(LENTE==\""+lente2+"\")' "+" 'DELETE()' "+" 'END' "+" 'GO'");
+	oDmApp.ParseCommand("chktri &WIRETRIN=_temp2tr &WIREPTIN=_temp1ttpt &WIRETROU="+lente2+"tr &WIREPTOU="+lente2+"pt @REMDUPID=0");	
+	oDmApp.ParseCommand("trivol &WIRETR="+lente2+"tr &WIREPT="+lente2+"pt &OUT=vol_"+lente2+"_old @ZBASE=-200 @NOSID=1 @DTM=0");		
+	oDmApp.ParseCommand("output &IN=vol_"+lente2+"_old *F1=LENTE *F2=VOLUME *F3=NUMTRI @CSV=1 @NODD=0 @DPLACE=-1 @IMPLICIT=0 "+" 'vol_"+lente2+"_old.csv'");		
+	oDmApp.ParseCommand("extra &IN="+stt.value+" &OUT="+lente2+"st @APPROX=0 @PRINT=1 "+" 'IF(LENTE!=\""+lente2+"\")' "+" 'DELETE()' "+" 'END' "+" 'GO'");
+	oDmApp.ParseCommand("extra &IN=_temp_tt1st &OUT=_temp_tt2st @APPROX=0 @PRINT=1 "+" 'IF(LENTE==\""+lente2+"\")' "+" 'DELETE()' "+" 'END' "+" 'GO'");
+	oDmFile.Open(""+lente2+"tr.dm",true);
+	oDmFile.MoveFirst();
+	_temp_mine    = oDmFile.GetColumn(5);
+	_temp_setor   = oDmFile.GetColumn(6);
+	_temp_serie   = oDmFile.GetColumn(7);
+	_temp_orebody = oDmFile.GetColumn(8);
+	_temp_lente  = oDmFile.GetColumn(9);
+	_temp_colour  = oDmFile.GetColumn(10);
+	_temp_group   = oDmFile.GetColumn(11);
+	_temp_surface = oDmFile.GetColumn(12);
+	_temp_otype   = oDmFile.GetColumn(13);
+	oDmFile.Close();
+	oDmApp.ParseCommand("inpfil  &OUT=dados_"+lente2+"      @PRINT=1 "+" '' "+" 'MINE' "+" 'A' "+" '2' "+" 'Y' "+" 'A' "+" 'SETOR' "+" 'A' "+" '8' "+" 'Y' "+" 'A' "+" 'SERIE'  "+" 'N' "+" 'Y' "+" '1' "+" 'OREBODY'  "+" 'N' "+" 'Y' "+" '1' "+" 'LENTE' "+" 'A' "+" '8' "+" 'Y' "+" 'A' "+" 'COLOUR'  "+" 'N' "+" 'Y' "+" '1' "+" 'GROUP'  "+" 'N' "+" 'Y' "+" '1' "+" 'SURFACE'  "+" 'N' "+" 'Y' "+" '1' "+" 'OTYPE' "+" 'A' "+" '8' "+" 'Y' "+" 'A' "+" '!' "+" 'y' "+" '' "+" '"+_temp_mine+","+_temp_setor+","+_temp_serie+","+_temp_orebody+","+_temp_lente+","+_temp_colour+","+_temp_group+","+_temp_surface+","+_temp_otype+"' "+" '!' ");
+	}
+
+
+	if(tem_mais2.checked==true){
+	oDmApp.ParseCommand("extra &IN="+wtr.value+" &OUT=_temp3tr @APPROX=0 @PRINT=1 "+" 'IF(LENTE!=\""+lente3+"\")' "+" 'DELETE()' "+" 'END' "+" 'GO'");
+	oDmApp.ParseCommand("extra &IN=_temp_tt2tr &OUT=_temp_tt3tr @APPROX=0 @PRINT=1 "+" 'IF(LENTE==\""+lente3+"\")' "+" 'DELETE()' "+" 'END' "+" 'GO'");
+	oDmApp.ParseCommand("chktri &WIRETRIN=_temp3tr &WIREPTIN=_temp1ttpt &WIRETROU="+lente3+"tr &WIREPTOU="+lente3+"pt @REMDUPID=0");	
+	oDmApp.ParseCommand("trivol &WIRETR="+lente3+"tr &WIREPT="+lente3+"pt &OUT=vol_"+lente3+"_old @ZBASE=-200 @NOSID=1 @DTM=0");		
+	oDmApp.ParseCommand("output &IN=vol_"+lente3+"_old *F1=LENTE *F2=VOLUME *F3=NUMTRI @CSV=1 @NODD=0 @DPLACE=-1 @IMPLICIT=0 "+" 'vol_"+lente3+"_old.csv'");		
+	oDmApp.ParseCommand("extra &IN="+stt.value+" &OUT="+lente3+"st @APPROX=0 @PRINT=1 "+" 'IF(LENTE!=\""+lente3+"\")' "+" 'DELETE()' "+" 'END' "+" 'GO'");
+	oDmApp.ParseCommand("extra &IN=_temp_tt2st &OUT=_temp_tt3st @APPROX=0 @PRINT=1 "+" 'IF(LENTE==\""+lente3+"\")' "+" 'DELETE()' "+" 'END' "+" 'GO'");
+	oDmFile.Open(""+lente3+"tr.dm",true);
+	oDmFile.MoveFirst();
+	_temp_mine    = oDmFile.GetColumn(5);
+	_temp_setor   = oDmFile.GetColumn(6);
+	_temp_serie   = oDmFile.GetColumn(7);
+	_temp_orebody = oDmFile.GetColumn(8);
+	_temp_lente  = oDmFile.GetColumn(9);
+	_temp_colour  = oDmFile.GetColumn(10);
+	_temp_group   = oDmFile.GetColumn(11);
+	_temp_surface = oDmFile.GetColumn(12);
+	_temp_otype   = oDmFile.GetColumn(13);
+	oDmFile.Close();
+	oDmApp.ParseCommand("inpfil  &OUT=dados_"+lente3+"      @PRINT=1 "+" '' "+" 'MINE' "+" 'A' "+" '2' "+" 'Y' "+" 'A' "+" 'SETOR' "+" 'A' "+" '8' "+" 'Y' "+" 'A' "+" 'SERIE'  "+" 'N' "+" 'Y' "+" '1' "+" 'OREBODY'  "+" 'N' "+" 'Y' "+" '1' "+" 'LENTE' "+" 'A' "+" '8' "+" 'Y' "+" 'A' "+" 'COLOUR'  "+" 'N' "+" 'Y' "+" '1' "+" 'GROUP'  "+" 'N' "+" 'Y' "+" '1' "+" 'SURFACE'  "+" 'N' "+" 'Y' "+" '1' "+" 'OTYPE' "+" 'A' "+" '8' "+" 'Y' "+" 'A' "+" '!' "+" 'y' "+" '' "+" '"+_temp_mine+","+_temp_setor+","+_temp_serie+","+_temp_orebody+","+_temp_lente+","+_temp_colour+","+_temp_group+","+_temp_surface+","+_temp_otype+"' "+" '!' ");
+	}
+	}
+	catch(e) {
+		alert("Failed\nReason: " + e.description);
+	}	
+	}
+
+	// COMEÇO DA SEGUNDA ETAPA
+	function btnExecute2_onclick()
+	{
+	try	{
+	oDmApp.ParseCommand("unload-all-data");
+	document.getElementById('lente1').disabled=true;
+	document.getElementById('lente2').disabled=true;
+	document.getElementById('lente3').disabled=true;
+	var lente1, lente2, lente3, _temp_mine;
+	lente1 = document.getElementById('lente1').value
+	lente2 = document.getElementById('lente2').value
+	lente3 = document.getElementById('lente3').value
+
+	
+	var DataToda, Dia, Mes, Mes1, Ano, Hora, Minutos, aaaammdd, Hora_Atual, DiaHoje;
+
+	DataToda = new Date();
+	Dia1 = DataToda.getDate();
+		if(Dia1<=9) {
+		Dia2 = '0'+Dia1;
+		Dia1=Dia2;
+		}
+	Mes = DataToda.getMonth();
+	Mes1 = Mes+1;
+		if(Mes1<=9) {
+		Mes2 = '0'+Mes1;
+		Mes1=Mes2;
+		}
+	Ano = DataToda.getFullYear();
+	Hora1=DataToda.getHours();
+	if(Hora1<=9) {
+		Hora2 = '0'+Hora1;
+		Hora1=Hora2;
+		}
+	Minutos1=DataToda.getMinutes();
+	if(Minutos1<=9) {
+		Minutos2 = '0'+Minutos1;
+		Minutos1=Minutos2;
+		}
+	DiaHoje=Dia1+'/'+Mes1+'/'+Ano;
+	Hora_Atual=Hora1+':'+Minutos1;
+	aaaammdd=Ano+Mes1+Dia1;
+
+	if(Select1.value==1) {
+
+	oDmFile.Open("dados_"+lente1+".dm",true);
+	oDmFile.MoveFirst();
+	_temp_mine    = oDmFile.GetColumn(1);
+	_temp_setor   = oDmFile.GetColumn(2);
+	_temp_serie   = oDmFile.GetColumn(3);
+	_temp_orebody = oDmFile.GetColumn(4);
+	_temp_lente  = oDmFile.GetColumn(5);
+	_temp_colour  = oDmFile.GetColumn(6);
+	_temp_group   = oDmFile.GetColumn(7);
+	_temp_surface = oDmFile.GetColumn(8);
+	_temp_otype   = oDmFile.GetColumn(9);
+	oDmFile.Close();
+
+	oDmApp.ParseCommand("extra &IN="+wtr1.value+" &OUT=_temp1tr @APPROX=0 @PRINT=1 "+" 'MINE=\""+_temp_mine+"\"' "+" 'SETOR=\""+_temp_setor+"\"' "+" 'OREBODY="+_temp_orebody+"' "+" 'LENTE;A8=\""+_temp_lente+"\"' "+" 'COLOUR="+_temp_colour+"' "+" 'GROUP="+_temp_group+"' "+" 'SURFACE="+_temp_surface+"' "+" 'OTYPE=\""+_temp_otype+"\"' "+" 'GO'");
+	oDmApp.ParseCommand("extra &IN="+st1.value+"  &OUT=_temp1st @APPROX=0 @PRINT=1 "+" 'MINE=\""+_temp_mine+"\"' "+" 'SETOR=\""+_temp_setor+"\"' "+" 'OREBODY="+_temp_orebody+"' "+" 'LENTE;A8=\""+_temp_lente+"\"' "+" 'COLOUR="+_temp_colour+"' "+" 'GROUP="+_temp_group+"' "+" 'SURFACE="+_temp_surface+"' "+" 'OTYPE=\""+_temp_otype+"\"' "+" 'GO'");
+	oDmApp.ParseCommand("copy  &IN="+wpt1.value+" &OUT=_temp1pt");
+	oDmApp.ParseCommand("chktri &WIRETRIN=_temp1tr &WIREPTIN=_temp1pt &WIRETROU=_temp_lente1tr &WIREPTOU=_temp_lente1pt @REMDUPID=0");	
+	oDmApp.ParseCommand("trivol &WIRETR=_temp_lente1tr &WIREPT=_temp_lente1pt &OUT=vol_"+lente1+"_new @ZBASE=-200 @NOSID=1 @DTM=0");		
+	oDmApp.ParseCommand("output &IN=vol_"+lente1+"_new *F1=LENTE *F2=VOLUME *F3=NUMTRI @CSV=1 @NODD=0 @DPLACE=-1 @IMPLICIT=0 "+" 'vol_"+lente1+"_new.csv'");		
+	oDmApp.ParseCommand("checkit &IN=_temp1st &OUT=_temp1_checkst");
+
+	
+	if(tem_mais1.checked==true){
+	oDmFile.Open("dados_"+lente2+".dm",true);
+	oDmFile.MoveFirst();
+	_temp_mine    = oDmFile.GetColumn(1);
+	_temp_setor   = oDmFile.GetColumn(2);
+	_temp_serie   = oDmFile.GetColumn(3);
+	_temp_orebody = oDmFile.GetColumn(4);
+	_temp_lente  = oDmFile.GetColumn(5);
+	_temp_colour  = oDmFile.GetColumn(6);
+	_temp_group   = oDmFile.GetColumn(7);
+	_temp_surface = oDmFile.GetColumn(8);
+	_temp_otype   = oDmFile.GetColumn(9);
+	oDmFile.Close();
+
+	oDmApp.ParseCommand("extra &IN="+wtr2.value+" &OUT=_temp2tr @APPROX=0 @PRINT=1 "+" 'MINE=\""+_temp_mine+"\"' "+" 'SETOR=\""+_temp_setor+"\"' "+" 'OREBODY="+_temp_orebody+"' "+" 'LENTE;A8=\""+_temp_lente+"\"' "+" 'COLOUR="+_temp_colour+"' "+" 'GROUP="+_temp_group+"' "+" 'SURFACE="+_temp_surface+"' "+" 'OTYPE=\""+_temp_otype+"\"' "+" 'GO'");
+	oDmApp.ParseCommand("extra &IN="+st2.value+"  &OUT=_temp2st @APPROX=0 @PRINT=1 "+" 'MINE=\""+_temp_mine+"\"' "+" 'SETOR=\""+_temp_setor+"\"' "+" 'OREBODY="+_temp_orebody+"' "+" 'LENTE;A8=\""+_temp_lente+"\"' "+" 'COLOUR="+_temp_colour+"' "+" 'GROUP="+_temp_group+"' "+" 'SURFACE="+_temp_surface+"' "+" 'OTYPE=\""+_temp_otype+"\"' "+" 'GO'");
+	oDmApp.ParseCommand("copy  &IN="+wpt2.value+" &OUT=_temp2pt");
+	oDmApp.ParseCommand("chktri &WIRETRIN=_temp2tr &WIREPTIN=_temp2pt &WIRETROU=_temp_lente2tr &WIREPTOU=_temp_lente2pt @REMDUPID=0");	
+	oDmApp.ParseCommand("trivol &WIRETR=_temp_lente2tr &WIREPT=_temp_lente2pt &OUT=vol_"+lente2+"_new @ZBASE=-200 @NOSID=1 @DTM=0");		
+	oDmApp.ParseCommand("output &IN=vol_"+lente2+"_new *F1=LENTE *F2=VOLUME *F3=NUMTRI @CSV=1 @NODD=0 @DPLACE=-1 @IMPLICIT=0 "+" 'vol_"+lente2+"_new.csv'");		
+	oDmApp.ParseCommand("checkit &IN=_temp2st &OUT=_temp2_checkst");
+
+	if(tem_mais2.checked==true){
+	oDmFile.Open("dados_"+lente3+".dm",true);
+	oDmFile.MoveFirst();
+	_temp_mine    = oDmFile.GetColumn(1);
+	_temp_setor   = oDmFile.GetColumn(2);
+	_temp_serie   = oDmFile.GetColumn(3);
+	_temp_orebody = oDmFile.GetColumn(4);
+	_temp_lente  = oDmFile.GetColumn(5);
+	_temp_colour  = oDmFile.GetColumn(6);
+	_temp_group   = oDmFile.GetColumn(7);
+	_temp_surface = oDmFile.GetColumn(8);
+	_temp_otype   = oDmFile.GetColumn(9);
+	oDmFile.Close();
+
+	oDmApp.ParseCommand("extra &IN="+wtr3.value+" &OUT=_temp3tr @APPROX=0 @PRINT=1 "+" 'MINE=\""+_temp_mine+"\"' "+" 'SETOR=\""+_temp_setor+"\"' "+" 'OREBODY="+_temp_orebody+"' "+" 'LENTE;A8=\""+_temp_lente+"\"' "+" 'COLOUR="+_temp_colour+"' "+" 'GROUP="+_temp_group+"' "+" 'SURFACE="+_temp_surface+"' "+" 'OTYPE=\""+_temp_otype+"\"' "+" 'GO'");
+	oDmApp.ParseCommand("extra &IN="+st3.value+"  &OUT=_temp3st @APPROX=0 @PRINT=1 "+" 'MINE=\""+_temp_mine+"\"' "+" 'SETOR=\""+_temp_setor+"\"' "+" 'OREBODY="+_temp_orebody+"' "+" 'LENTE;A8=\""+_temp_lente+"\"' "+" 'COLOUR="+_temp_colour+"' "+" 'GROUP="+_temp_group+"' "+" 'SURFACE="+_temp_surface+"' "+" 'OTYPE=\""+_temp_otype+"\"' "+" 'GO'");
+	oDmApp.ParseCommand("copy  &IN="+wpt3.value+" &OUT=_temp3pt");
+	oDmApp.ParseCommand("chktri &WIRETRIN=_temp3tr &WIREPTIN=_temp3pt &WIRETROU=_temp_lente3tr &WIREPTOU=_temp_lente3pt @REMDUPID=0");	
+	oDmApp.ParseCommand("trivol &WIRETR=_temp_lente3tr &WIREPT=_temp_lente3pt &OUT=vol_"+lente3+"_new @ZBASE=-200 @NOSID=1 @DTM=0");		
+	oDmApp.ParseCommand("output &IN=vol_"+lente3+"_new *F1=LENTE *F2=VOLUME *F3=NUMTRI @CSV=1 @NODD=0 @DPLACE=-1 @IMPLICIT=0 "+" 'vol_"+lente3+"_new.csv'");		
+	oDmApp.ParseCommand("checkit &IN=_temp3st &OUT=_temp3_checkst");
+	
+	oDmApp.ParseCommand("addtri &WIRETR1=_temp_tt3tr &WIREPT1=_temp1ttpt &WIRETR2=_temp_lente3tr &WIREPT2=_temp_lente3pt &WIRETROU=_temp_ad1tr  &WIREPTOU=_temp_ad1pt");
+	oDmApp.ParseCommand("addtri &WIRETR1=_temp_ad1tr &WIREPT1=_temp_ad1pt &WIRETR2=_temp_lente2tr &WIREPT2=_temp_lente2pt &WIRETROU=_temp_ad2tr  &WIREPTOU=_temp_ad2pt");
+	oDmApp.ParseCommand("addtri &WIRETR1=_temp_ad2tr &WIREPT1=_temp_ad2pt &WIRETR2=_temp_lente1tr &WIREPT2=_temp_lente1pt &WIRETROU=_temp_ad3tr  &WIREPTOU=_temp_ad3pt");
+
+	oDmApp.ParseCommand("append &IN1=_temp_tt3st &IN2=_temp3_checkst &OUT=_temp_ad1ST @SEQUENCE=0 @PROTODD=0 @PRINT=0");
+	oDmApp.ParseCommand("append &IN1=_temp_ad1ST &IN2=_temp2_checkst &OUT=_temp_ad2ST @SEQUENCE=0 @PROTODD=0 @PRINT=0");
+	oDmApp.ParseCommand("append &IN1=_temp_tt2st &IN2=_temp1_checkst &OUT=_temp_ad3ST @SEQUENCE=0 @PROTODD=0 @PRINT=0");
+	oDmApp.ParseCommand("checkit &IN=_temp_ad3ST &OUT=_temp_ck");
+	oDmApp.ParseCommand("MGSORT &IN=_temp_ck &OUT=n7sf_"+aaaammdd+"st *KEY1=MINE *KEY2=SETOR *KEY3=SERIE *KEY4=OREBODY *KEY5=LENTE @ORDER=1");		
+
+	oDmApp.ParseCommand("inpfil &OUT=_temp_ad_fieldlst @PRINT=1 "+		
+	 " '' "+	
+	 " 'FIELDNAM'"+	
+	 " 'A'"+	
+	 " '24'"+	
+	 " 'Y'"+	
+	 " 'A' "+	
+	 " '!' "+	
+	 " 'y' "+	
+	 " '' "+	
+	 " 'ROCKTYPE' "+	
+	 " 'LAYERS' "+	
+	 " 'LTYPE' "+	
+	 " 'id' "+	
+	 " 'THICKNES' "+	
+	 " 'ANGLE' "+	
+	 " 'XDAT001' "+	
+	 " 'XDAT002' "+	
+	 " 'XDAT003' "+	
+	 " 'XDAT004' "+	
+	 " 'XDAT005' "+	
+	 " 'XDAT006' "+	
+	 " 'XDAT007' "+	
+	 " 'XDAT008' "+	
+	 " 'XDAT009' "+	
+	 " 'XDAT010' "+	
+	 " 'XDAT011' "+	
+	 " 'XDAT012' "+	
+	 " 'XDAT013' "+	
+	 " 'XDAT014' "+	
+	 " 'XDAT015' "+	
+	 " 'XDAT016' "+	
+	 " 'XDAT017' "+	
+	 " 'XDAT018' "+	
+	 " 'CROSSOVR' "+	
+	 " 'BLOCKID' "+	
+	 " 'LSTYLE' "+	
+	 " 'SYMBOL' "+	
+	 " 'secao' "+	
+	 "'FILENAME'"+	
+	 " '!' ");	
+	oDmApp.ParseCommand("seldel &IN=_temp_ad3tr &FIELDLST=_temp_ad_fieldlst &OUT=_temp1tr *F1=ALVO  *FIELDNAM=FIELDNAM @KEEPALL=0");		
+ 	oDmApp.ParseCommand("MGSORT &IN=_temp1tr &OUT=_temp_totaltr *KEY1=MINE *KEY2=SETOR *KEY3=SERIE *KEY4=OREBODY *KEY5=LENTE @ORDER=1");		
+	oDmApp.ParseCommand("chktri &WIRETRIN=_temp_totaltr &WIREPTIN=_temp_ad3pt &WIRETROU=n7sf_"+aaaammdd+"tr &WIREPTOU=n7sf_"+aaaammdd+"pt @REMDUPID=0");	
+	oDmApp.ParseCommand("trivol &WIRETR=n7sf_"+aaaammdd+"tr &WIREPT=n7sf_"+aaaammdd+"pt &OUT=vol_total_new @ZBASE=-200 @NOSID=1 @DTM=0");		
+	oDmApp.ParseCommand("output &IN=vol_total_new *F1=LENTE *F2=VOLUME *F3=NUMTRI @CSV=1 @NODD=0 @DPLACE=-1 @IMPLICIT=0 "+" 'vol_n7sf_"+aaaammdd+".csv'");		
+	oDmApp.ParseCommand("trivol &WIRETR=n7sf_"+aaaammdd+"tr &WIREPT=n7sf_"+aaaammdd+"pt &OUT=_TEMP_vol *ZONE=LENTE @ZBASE=-200 @NOSID=1 @DTM=0");		
+ 	oDmApp.ParseCommand("MGSORT &IN=_TEMP_vol &OUT=vol_n7sf_"+aaaammdd+"_LENTE *KEY1=LENTE @ORDER=1");		
+	oDmApp.ParseCommand("output &IN=vol_n7sf_"+aaaammdd+"_LENTE *F1=LENTE *F2=VOLUME *F3=NUMTRI @CSV=1 @NODD=0 @DPLACE=-1 @IMPLICIT=0 "+" 'vol_n7sf_"+aaaammdd+"_LENTE.csv'");		
+	oDmApp.ParseCommand("trivol &WIRETR="+wtr.value+" &WIREPT="+wpt.value+" &OUT=vol_"+wtr.value+" @ZBASE=-200 @NOSID=1 @DTM=0");		
+	oDmApp.ParseCommand("output &IN=vol_"+wtr.value+" *F1=LENTE *F2=VOLUME *F3=NUMTRI @CSV=1 @NODD=0 @DPLACE=-1 @IMPLICIT=0 "+" 'vol_"+wtr.value+".csv'");		
+	oDmApp.ParseCommand("trivol &WIRETR="+wtr.value+" &WIREPT="+wpt.value+" &OUT=_TEMP_vol *ZONE=LENTE @ZBASE=-200 @NOSID=1 @DTM=0");		
+ 	oDmApp.ParseCommand("MGSORT &IN=_TEMP_vol &OUT=vol_"+wtr.value+"_LENTE *KEY1=LENTE @ORDER=1");		
+	oDmApp.ParseCommand("output &IN=vol_"+wtr.value+"_LENTE *F1=LENTE *F2=VOLUME *F3=NUMTRI @CSV=1 @NODD=0 @DPLACE=-1 @IMPLICIT=0 "+" 'vol_"+wtr.value+"_LENTE.csv'");		
+	}
+	else{
+	oDmApp.ParseCommand("addtri &WIRETR1=_temp_tt2tr &WIREPT1=_temp1ttpt &WIRETR2=_temp_LENTE2tr &WIREPT2=_temp_LENTE2pt &WIRETROU=_temp_ad1tr  &WIREPTOU=_temp_ad1pt");
+	oDmApp.ParseCommand("addtri &WIRETR1=_temp_ad1tr &WIREPT1=_temp_ad1pt &WIRETR2=_temp_LENTE1tr &WIREPT2=_temp_LENTE1pt &WIRETROU=_temp_ad2tr  &WIREPTOU=_temp_ad2pt");
+
+	oDmApp.ParseCommand("append &IN1=_temp_tt2st &IN2=_temp2_checkst &OUT=_temp_ad1ST @SEQUENCE=0 @PROTODD=0 @PRINT=0");
+	oDmApp.ParseCommand("append &IN1=_temp_ad1ST &IN2=_temp1_checkst &OUT=_temp_ad2ST @SEQUENCE=0 @PROTODD=0 @PRINT=0");
+	oDmApp.ParseCommand("checkit &IN=_temp_ad2ST &OUT=_temp_ck");
+	oDmApp.ParseCommand("MGSORT &IN=_temp_ck &OUT=n7sf_"+aaaammdd+"st *KEY1=MINE *KEY2=SETOR *KEY3=SERIE *KEY4=OREBODY *KEY5=LENTE @ORDER=1");		
+	oDmApp.ParseCommand("inpfil  &OUT=teste1      @PRINT=1 "+" '' "+" 'SREFNUM' "+" 'A' "+" '8' "+" 'Y' "+" 'CUT_MOD' "+" 'SMETHOD' "+" 'A' "+" '8' "+" 'Y' "+" 'CUT_MOD' "+" 'SDIST1'  "+" 'N' "+" 'Y' "+" '24' "+" 'SDIST2'  "+" 'N' "+" 'Y' "+" '39' "+" 'SDIST3'  "+" 'N' "+" 'Y' "+" '3.5' "+" 'SANGLE1'  "+" 'N' "+" 'Y' "+" '35' "+" 'SANGLE2'  "+" 'N' "+" 'Y' "+" '22' "+" 'SANGLE3'  "+" 'N' "+" 'Y' "+" '-56' "+" 'SAXIS1'  "+" 'N' "+" 'Y' "+" '3' "+" 'SAXIS2'  "+" 'N' "+" 'Y' "+" '1' "+" 'SAXIS3'  "+" 'N' "+" 'Y' "+" '2' "+" 'OCTMETH'  "+" 'N' "+" 'Y' "+" '1' "+" 'MINOCT'  "+" 'N' "+" 'Y' "+" '2' "+" 'MINPEROC'  "+" 'N' "+" 'Y' "+" '1' "+" 'MAXPEROC'  "+" 'N' "+" 'Y' "+" '40' "+" 'MINNUM1'  "+" 'N' "+" 'Y' "+" '8' "+" 'MAXNUM1'  "+" 'N' "+" 'Y' "+" '80' "+" 'SVOLFAC2'  "+" 'N' "+" 'Y' "+" '2' "+" 'MINNUM2'  "+" 'N' "+" 'Y' "+" '8' "+" 'MAXNUM2'  "+" 'N' "+" 'Y' "+" '80' "+" 'SVOLFAC3'  "+" 'N' "+" 'Y' "+" '3' "+" 'MINNUM3'  "+" 'N' "+" 'Y' "+" '8' "+" 'MAXNUM3'  "+" 'N' "+" 'Y' "+" '80' "+" 'MAXKEY'  "+" 'N' "+" 'Y' "+" '0' "+" '!' "+" 'y' "+" '' "+" '"+_temp_mine+","+aaaammdd+",1,2,0,0,0,0,3,1,2,0,1,1,12,4,12,1.5,4,12,2.25,12,2' "+" '!' ");
+
+	oDmApp.ParseCommand("inpfil &OUT=_temp_ad_fieldlst @PRINT=1 "+		
+	 " '' "+	
+	 " 'FIELDNAM'"+	
+	 " 'A'"+	
+	 " '24'"+	
+	 " 'Y'"+	
+	 " 'A' "+	
+	 " '!' "+	
+	 " 'y' "+	
+	 " '' "+	
+	 " 'ROCKTYPE' "+	
+	 " 'LAYERS' "+	
+	 " 'LTYPE' "+	
+	 " 'id' "+	
+	 " 'THICKNES' "+	
+	 " 'ANGLE' "+	
+	 " 'XDAT001' "+	
+	 " 'XDAT002' "+	
+	 " 'XDAT003' "+	
+	 " 'XDAT004' "+	
+	 " 'XDAT005' "+	
+	 " 'XDAT006' "+	
+	 " 'XDAT007' "+	
+	 " 'XDAT008' "+	
+	 " 'XDAT009' "+	
+	 " 'XDAT010' "+	
+	 " 'XDAT011' "+	
+	 " 'XDAT012' "+	
+	 " 'XDAT013' "+	
+	 " 'XDAT014' "+	
+	 " 'XDAT015' "+	
+	 " 'XDAT016' "+	
+	 " 'XDAT017' "+	
+	 " 'XDAT018' "+	
+	 " 'CROSSOVR' "+	
+	 " 'BLOCKID' "+	
+	 " 'LSTYLE' "+	
+	 " 'SYMBOL' "+	
+	 " 'secao' "+	
+	 "'FILENAME'"+	
+	 " '!' ");	
+	oDmApp.ParseCommand("seldel &IN=_temp_ad2tr &FIELDLST=_temp_ad_fieldlst &OUT=_temp1tr *F1=ALVO  *FIELDNAM=FIELDNAM @KEEPALL=0");		
+ 	oDmApp.ParseCommand("MGSORT &IN=_temp1tr &OUT=_temp_totaltr *KEY1=MINE *KEY2=SETOR *KEY3=SERIE *KEY4=OREBODY *KEY5=LENTE @ORDER=1");		
+	oDmApp.ParseCommand("chktri &WIRETRIN=_temp_totaltr &WIREPTIN=_temp_ad2pt &WIRETROU=n7sf_"+aaaammdd+"tr &WIREPTOU=n7sf_"+aaaammdd+"pt @REMDUPID=0");	
+	oDmApp.ParseCommand("trivol &WIRETR=n7sf_"+aaaammdd+"tr &WIREPT=n7sf_"+aaaammdd+"pt &OUT=vol_total_new @ZBASE=-200 @NOSID=1 @DTM=0");		
+	oDmApp.ParseCommand("output &IN=vol_total_new *F1=LENTE *F2=VOLUME *F3=NUMTRI @CSV=1 @NODD=0 @DPLACE=-1 @IMPLICIT=0 "+" 'vol_n7sf_"+aaaammdd+".csv'");		
+	oDmApp.ParseCommand("trivol &WIRETR=n7sf_"+aaaammdd+"tr &WIREPT=n7sf_"+aaaammdd+"pt &OUT=_TEMP_vol *ZONE=LENTE @ZBASE=-200 @NOSID=1 @DTM=0");		
+ 	oDmApp.ParseCommand("MGSORT &IN=_TEMP_vol &OUT=vol_n7sf_"+aaaammdd+"_LENTE *KEY1=LENTE @ORDER=1");		
+	oDmApp.ParseCommand("output &IN=vol_n7sf_"+aaaammdd+"_LENTE *F1=LENTE *F2=VOLUME *F3=NUMTRI @CSV=1 @NODD=0 @DPLACE=-1 @IMPLICIT=0 "+" 'vol_n7sf_"+aaaammdd+"_LENTE.csv'");		
+	oDmApp.ParseCommand("trivol &WIRETR="+wtr.value+" &WIREPT="+wpt.value+" &OUT=vol_"+wtr.value+" @ZBASE=-200 @NOSID=1 @DTM=0");		
+	oDmApp.ParseCommand("output &IN=vol_"+wtr.value+" *F1=LENTE *F2=VOLUME *F3=NUMTRI @CSV=1 @NODD=0 @DPLACE=-1 @IMPLICIT=0 "+" 'vol_"+wtr.value+".csv'");		
+	oDmApp.ParseCommand("trivol &WIRETR="+wtr.value+" &WIREPT="+wpt.value+" &OUT=_TEMP_vol *ZONE=LENTE @ZBASE=-200 @NOSID=1 @DTM=0");		
+ 	oDmApp.ParseCommand("MGSORT &IN=_TEMP_vol &OUT=vol_"+wtr.value+"_LENTE *KEY1=LENTE @ORDER=1");		
+	oDmApp.ParseCommand("output &IN=vol_"+wtr.value+"_LENTE *F1=LENTE *F2=VOLUME *F3=NUMTRI @CSV=1 @NODD=0 @DPLACE=-1 @IMPLICIT=0 "+" 'vol_"+wtr.value+"_LENTE.csv'");		
+	}
+	}
+	else{
+	oDmApp.ParseCommand("addtri &WIRETR1=_temp_tt1tr &WIREPT1=_temp1ttpt &WIRETR2=_temp_LENTE1tr &WIREPT2=_temp_LENTE1pt &WIRETROU=_temp_ad1tr  &WIREPTOU=_temp_ad1pt");
+
+	oDmApp.ParseCommand("append &IN1=_temp_tt1st &IN2=_temp1_checkst &OUT=_temp_ad1ST @SEQUENCE=0 @PROTODD=0 @PRINT=0");
+	oDmApp.ParseCommand("checkit &IN=_temp_ad1ST &OUT=_temp_ck");
+	oDmApp.ParseCommand("MGSORT &IN=_temp_ck &OUT=n7sf_"+aaaammdd+"st *KEY1=MINE *KEY2=SETOR *KEY3=SERIE *KEY4=OREBODY *KEY5=LENTE @ORDER=1");		
+
+	oDmApp.ParseCommand("inpfil &OUT=_temp_ad_fieldlst @PRINT=1 "+		
+	 " '' "+	
+	 " 'FIELDNAM'"+	
+	 " 'A'"+	
+	 " '24'"+	
+	 " 'Y'"+	
+	 " 'A' "+	
+	 " '!' "+	
+	 " 'y' "+	
+	 " '' "+	
+	 " 'ROCKTYPE' "+	
+	 " 'LAYERS' "+	
+	 " 'LTYPE' "+	
+	 " 'id' "+	
+	 " 'THICKNES' "+	
+	 " 'ANGLE' "+	
+	 " 'XDAT001' "+	
+	 " 'XDAT002' "+	
+	 " 'XDAT003' "+	
+	 " 'XDAT004' "+	
+	 " 'XDAT005' "+	
+	 " 'XDAT006' "+	
+	 " 'XDAT007' "+	
+	 " 'XDAT008' "+	
+	 " 'XDAT009' "+	
+	 " 'XDAT010' "+	
+	 " 'XDAT011' "+	
+	 " 'XDAT012' "+	
+	 " 'XDAT013' "+	
+	 " 'XDAT014' "+	
+	 " 'XDAT015' "+	
+	 " 'XDAT016' "+	
+	 " 'XDAT017' "+	
+	 " 'XDAT018' "+	
+	 " 'CROSSOVR' "+	
+	 " 'BLOCKID' "+	
+	 " 'LSTYLE' "+	
+	 " 'SYMBOL' "+	
+	 " 'secao' "+	
+	 "'FILENAME'"+	
+	 " '!' ");	
+	oDmApp.ParseCommand("seldel &IN=_temp_ad1tr &FIELDLST=_temp_ad_fieldlst &OUT=_temp1tr *F1=ALVO  *FIELDNAM=FIELDNAM @KEEPALL=0");		
+ 	oDmApp.ParseCommand("MGSORT &IN=_temp1tr &OUT=_temp_totaltr *KEY1=MINE *KEY2=SETOR *KEY3=SERIE *KEY4=OREBODY *KEY5=LENTE @ORDER=1");		
+	oDmApp.ParseCommand("chktri &WIRETRIN=_temp_totaltr &WIREPTIN=_temp_ad1pt &WIRETROU=n7sf_"+aaaammdd+"tr &WIREPTOU=n7sf_"+aaaammdd+"pt @REMDUPID=0");	
+	oDmApp.ParseCommand("trivol &WIRETR=n7sf_"+aaaammdd+"tr &WIREPT=n7sf_"+aaaammdd+"pt &OUT=vol_total_new @ZBASE=-200 @NOSID=1 @DTM=0");		
+	oDmApp.ParseCommand("output &IN=vol_total_new *F1=LENTE *F2=VOLUME *F3=NUMTRI @CSV=1 @NODD=0 @DPLACE=-1 @IMPLICIT=0 "+" 'vol_n7sf_"+aaaammdd+".csv'");		
+	oDmApp.ParseCommand("trivol &WIRETR=n7sf_"+aaaammdd+"tr &WIREPT=n7sf_"+aaaammdd+"pt &OUT=_TEMP_vol *ZONE=LENTE @ZBASE=-200 @NOSID=1 @DTM=0");		
+ 	oDmApp.ParseCommand("MGSORT &IN=_TEMP_vol &OUT=vol_n7sf_"+aaaammdd+"_LENTE *KEY1=LENTE @ORDER=1");		
+	oDmApp.ParseCommand("output &IN=vol_n7sf_"+aaaammdd+"_LENTE *F1=LENTE *F2=VOLUME *F3=NUMTRI @CSV=1 @NODD=0 @DPLACE=-1 @IMPLICIT=0 "+" 'vol_n7sf_"+aaaammdd+"_LENTE.csv'");		
+	oDmApp.ParseCommand("trivol &WIRETR="+wtr.value+" &WIREPT="+wpt.value+" &OUT=vol_"+wtr.value+" @ZBASE=-200 @NOSID=1 @DTM=0");		
+	oDmApp.ParseCommand("output &IN=vol_"+wtr.value+" *F1=LENTE *F2=VOLUME *F3=NUMTRI @CSV=1 @NODD=0 @DPLACE=-1 @IMPLICIT=0 "+" 'vol_"+wtr.value+".csv'");		
+	oDmApp.ParseCommand("trivol &WIRETR="+wtr.value+" &WIREPT="+wpt.value+" &OUT=_TEMP_vol *ZONE=LENTE @ZBASE=-200 @NOSID=1 @DTM=0");		
+ 	oDmApp.ParseCommand("MGSORT &IN=_TEMP_vol &OUT=vol_"+wtr.value+"_LENTE *KEY1=LENTE @ORDER=1");		
+	oDmApp.ParseCommand("output &IN=vol_"+wtr.value+"_LENTE *F1=LENTE *F2=VOLUME *F3=NUMTRI @CSV=1 @NODD=0 @DPLACE=-1 @IMPLICIT=0 "+" 'vol_"+wtr.value+"_LENTE.csv'");		
+	
+	}
+	}
+	if(Select1.value==2) {
+
+	oDmFile.Open("dados_"+lente1+".dm",true);
+	oDmFile.MoveFirst();
+	_temp_mine    = oDmFile.GetColumn(1);
+	_temp_setor   = oDmFile.GetColumn(2);
+	_temp_serie   = oDmFile.GetColumn(3);
+	_temp_orebody = oDmFile.GetColumn(4);
+	_temp_lente  = oDmFile.GetColumn(5);
+	_temp_colour  = oDmFile.GetColumn(6);
+	_temp_group   = oDmFile.GetColumn(7);
+	_temp_surface = oDmFile.GetColumn(8);
+	_temp_otype   = oDmFile.GetColumn(9);
+	oDmFile.Close();
+
+	oDmApp.ParseCommand("extra &IN="+wtr1.value+" &OUT=_temp1tr @APPROX=0 @PRINT=1 "+" 'MINE=\""+_temp_mine+"\"' "+" 'SETOR=\""+_temp_setor+"\"' "+" 'OREBODY="+_temp_orebody+"' "+" 'LENTE=\""+_temp_lente+"\"' "+" 'COLOUR="+_temp_colour+"' "+" 'GROUP="+_temp_group+"' "+" 'SURFACE="+_temp_surface+"' "+" 'OTYPE=\""+_temp_otype+"\"' "+" 'GO'");
+	oDmApp.ParseCommand("extra &IN="+st1.value+"  &OUT=_temp1st @APPROX=0 @PRINT=1 "+" 'MINE=\""+_temp_mine+"\"' "+" 'SETOR=\""+_temp_setor+"\"' "+" 'OREBODY="+_temp_orebody+"' "+" 'LENTE=\""+_temp_lente+"\"' "+" 'COLOUR="+_temp_colour+"' "+" 'GROUP="+_temp_group+"' "+" 'SURFACE="+_temp_surface+"' "+" 'OTYPE=\""+_temp_otype+"\"' "+" 'GO'");
+	oDmApp.ParseCommand("copy  &IN="+wpt1.value+" &OUT=_temp1pt");
+	oDmApp.ParseCommand("chktri &WIRETRIN=_temp1tr &WIREPTIN=_temp1pt &WIRETROU=_temp_lente1tr &WIREPTOU=_temp_lente1pt @REMDUPID=0");	
+	oDmApp.ParseCommand("trivol &WIRETR=_temp_lente1tr &WIREPT=_temp_lente1pt &OUT=vol_"+lente1+"_new @ZBASE=-200 @NOSID=1 @DTM=0");		
+	oDmApp.ParseCommand("output &IN=vol_"+lente1+"_new *F1=LENTE *F2=VOLUME *F3=NUMTRI @CSV=1 @NODD=0 @DPLACE=-1 @IMPLICIT=0 "+" 'vol_"+lente1+"_new.csv'");		
+	oDmApp.ParseCommand("checkit &IN=_temp1st &OUT=_temp1_checkst");
+
+	
+	if(tem_mais1.checked==true){
+	oDmFile.Open("dados_"+lente2+".dm",true);
+	oDmFile.MoveFirst();
+	_temp_mine    = oDmFile.GetColumn(1);
+	_temp_setor   = oDmFile.GetColumn(2);
+	_temp_serie   = oDmFile.GetColumn(3);
+	_temp_orebody = oDmFile.GetColumn(4);
+	_temp_lente  = oDmFile.GetColumn(5);
+	_temp_colour  = oDmFile.GetColumn(6);
+	_temp_group   = oDmFile.GetColumn(7);
+	_temp_surface = oDmFile.GetColumn(8);
+	_temp_otype   = oDmFile.GetColumn(9);
+	oDmFile.Close();
+
+	oDmApp.ParseCommand("extra &IN="+wtr2.value+" &OUT=_temp2tr @APPROX=0 @PRINT=1 "+" 'MINE=\""+_temp_mine+"\"' "+" 'SETOR=\""+_temp_setor+"\"' "+" 'OREBODY="+_temp_orebody+"' "+" 'LENTE=\""+_temp_lente+"\"' "+" 'COLOUR="+_temp_colour+"' "+" 'GROUP="+_temp_group+"' "+" 'SURFACE="+_temp_surface+"' "+" 'OTYPE=\""+_temp_otype+"\"' "+" 'GO'");
+	oDmApp.ParseCommand("extra &IN="+st2.value+"  &OUT=_temp2st @APPROX=0 @PRINT=1 "+" 'MINE=\""+_temp_mine+"\"' "+" 'SETOR=\""+_temp_setor+"\"' "+" 'OREBODY="+_temp_orebody+"' "+" 'LENTE=\""+_temp_lente+"\"' "+" 'COLOUR="+_temp_colour+"' "+" 'GROUP="+_temp_group+"' "+" 'SURFACE="+_temp_surface+"' "+" 'OTYPE=\""+_temp_otype+"\"' "+" 'GO'");
+	oDmApp.ParseCommand("copy  &IN="+wpt2.value+" &OUT=_temp2pt");
+	oDmApp.ParseCommand("chktri &WIRETRIN=_temp2tr &WIREPTIN=_temp2pt &WIRETROU=_temp_lente2tr &WIREPTOU=_temp_lente2pt @REMDUPID=0");	
+	oDmApp.ParseCommand("trivol &WIRETR=_temp_lente2tr &WIREPT=_temp_lente2pt &OUT=vol_"+lente2+"_new @ZBASE=-200 @NOSID=1 @DTM=0");		
+	oDmApp.ParseCommand("output &IN=vol_"+lente2+"_new *F1=LENTE *F2=VOLUME *F3=NUMTRI @CSV=1 @NODD=0 @DPLACE=-1 @IMPLICIT=0 "+" 'vol_"+lente2+"_new.csv'");		
+	oDmApp.ParseCommand("checkit &IN=_temp2st &OUT=_temp2_checkst");
+
+	if(tem_mais2.checked==true){
+	oDmFile.Open("dados_"+lente3+".dm",true);
+	oDmFile.MoveFirst();
+	_temp_mine    = oDmFile.GetColumn(1);
+	_temp_setor   = oDmFile.GetColumn(2);
+	_temp_serie   = oDmFile.GetColumn(3);
+	_temp_orebody = oDmFile.GetColumn(4);
+	_temp_lente  = oDmFile.GetColumn(5);
+	_temp_colour  = oDmFile.GetColumn(6);
+	_temp_group   = oDmFile.GetColumn(7);
+	_temp_surface = oDmFile.GetColumn(8);
+	_temp_otype   = oDmFile.GetColumn(9);
+	oDmFile.Close();
+
+	oDmApp.ParseCommand("extra &IN="+wtr3.value+" &OUT=_temp3tr @APPROX=0 @PRINT=1 "+" 'MINE=\""+_temp_mine+"\"' "+" 'SETOR=\""+_temp_setor+"\"' "+" 'OREBODY="+_temp_orebody+"' "+" 'LENTE=\""+_temp_lente+"\"' "+" 'COLOUR="+_temp_colour+"' "+" 'GROUP="+_temp_group+"' "+" 'SURFACE="+_temp_surface+"' "+" 'OTYPE=\""+_temp_otype+"\"' "+" 'GO'");
+	oDmApp.ParseCommand("extra &IN="+st3.value+"  &OUT=_temp3st @APPROX=0 @PRINT=1 "+" 'MINE=\""+_temp_mine+"\"' "+" 'SETOR=\""+_temp_setor+"\"' "+" 'OREBODY="+_temp_orebody+"' "+" 'LENTE=\""+_temp_lente+"\"' "+" 'COLOUR="+_temp_colour+"' "+" 'GROUP="+_temp_group+"' "+" 'SURFACE="+_temp_surface+"' "+" 'OTYPE=\""+_temp_otype+"\"' "+" 'GO'");
+	oDmApp.ParseCommand("copy  &IN="+wpt3.value+" &OUT=_temp3pt");
+	oDmApp.ParseCommand("chktri &WIRETRIN=_temp3tr &WIREPTIN=_temp3pt &WIRETROU=_temp_lente3tr &WIREPTOU=_temp_lente3pt @REMDUPID=0");	
+	oDmApp.ParseCommand("trivol &WIRETR=_temp_lente3tr &WIREPT=_temp_lente3pt &OUT=vol_"+lente3+"_new @ZBASE=-200 @NOSID=1 @DTM=0");		
+	oDmApp.ParseCommand("output &IN=vol_"+lente3+"_new *F1=LENTE *F2=VOLUME *F3=NUMTRI @CSV=1 @NODD=0 @DPLACE=-1 @IMPLICIT=0 "+" 'vol_"+lente3+"_new.csv'");		
+	oDmApp.ParseCommand("checkit &IN=_temp3st &OUT=_temp3_checkst");
+	
+	oDmApp.ParseCommand("addtri &WIRETR1=_temp_tt3tr &WIREPT1=_temp1ttpt &WIRETR2=_temp_lente3tr &WIREPT2=_temp_lente3pt &WIRETROU=_temp_ad1tr  &WIREPTOU=_temp_ad1pt");
+	oDmApp.ParseCommand("addtri &WIRETR1=_temp_ad1tr &WIREPT1=_temp_ad1pt &WIRETR2=_temp_lente2tr &WIREPT2=_temp_lente2pt &WIRETROU=_temp_ad2tr  &WIREPTOU=_temp_ad2pt");
+	oDmApp.ParseCommand("addtri &WIRETR1=_temp_ad2tr &WIREPT1=_temp_ad2pt &WIRETR2=_temp_lente1tr &WIREPT2=_temp_lente1pt &WIRETROU=_temp_ad3tr  &WIREPTOU=_temp_ad3pt");
+
+	oDmApp.ParseCommand("append &IN1=_temp_tt3st &IN2=_temp3_checkst &OUT=_temp_ad1ST @SEQUENCE=0 @PROTODD=0 @PRINT=0");
+	oDmApp.ParseCommand("append &IN1=_temp_ad1ST &IN2=_temp2_checkst &OUT=_temp_ad2ST @SEQUENCE=0 @PROTODD=0 @PRINT=0");
+	oDmApp.ParseCommand("append &IN1=_temp_tt2st &IN2=_temp1_checkst &OUT=_temp_ad3ST @SEQUENCE=0 @PROTODD=0 @PRINT=0");
+	oDmApp.ParseCommand("checkit &IN=_temp_ad3ST &OUT=_temp_ck");
+	oDmApp.ParseCommand("MGSORT &IN=_temp_ck &OUT=n7ox_"+aaaammdd+"st *KEY1=MINE *KEY2=SETOR *KEY3=SERIE *KEY4=OREBODY *KEY5=LENTE @ORDER=1");		
+
+	oDmApp.ParseCommand("inpfil &OUT=_temp_ad_fieldlst @PRINT=1 "+		
+	 " '' "+	
+	 " 'FIELDNAM'"+	
+	 " 'A'"+	
+	 " '24'"+	
+	 " 'Y'"+	
+	 " 'A' "+	
+	 " '!' "+	
+	 " 'y' "+	
+	 " '' "+	
+	 " 'ROCKTYPE' "+	
+	 " 'LAYERS' "+	
+	 " 'LTYPE' "+	
+	 " 'id' "+	
+	 " 'THICKNES' "+	
+	 " 'ANGLE' "+	
+	 " 'XDAT001' "+	
+	 " 'XDAT002' "+	
+	 " 'XDAT003' "+	
+	 " 'XDAT004' "+	
+	 " 'XDAT005' "+	
+	 " 'XDAT006' "+	
+	 " 'XDAT007' "+	
+	 " 'XDAT008' "+	
+	 " 'XDAT009' "+	
+	 " 'XDAT010' "+	
+	 " 'XDAT011' "+	
+	 " 'XDAT012' "+	
+	 " 'XDAT013' "+	
+	 " 'XDAT014' "+	
+	 " 'XDAT015' "+	
+	 " 'XDAT016' "+	
+	 " 'XDAT017' "+	
+	 " 'XDAT018' "+	
+	 " 'CROSSOVR' "+	
+	 " 'BLOCKID' "+	
+	 " 'LSTYLE' "+	
+	 " 'SYMBOL' "+	
+	 " 'secao' "+	
+	 "'FILENAME'"+	
+	 " '!' ");	
+	oDmApp.ParseCommand("seldel &IN=_temp_ad3tr &FIELDLST=_temp_ad_fieldlst &OUT=_temp1tr *F1=ALVO  *FIELDNAM=FIELDNAM @KEEPALL=0");		
+ 	oDmApp.ParseCommand("MGSORT &IN=_temp1tr &OUT=_temp_totaltr *KEY1=MINE *KEY2=SETOR *KEY3=SERIE *KEY4=OREBODY *KEY5=LENTE @ORDER=1");		
+	oDmApp.ParseCommand("chktri &WIRETRIN=_temp_totaltr &WIREPTIN=_temp_ad3pt &WIRETROU=n7ox_"+aaaammdd+"tr &WIREPTOU=n7ox_"+aaaammdd+"pt @REMDUPID=0");	
+	oDmApp.ParseCommand("trivol &WIRETR=n7ox_"+aaaammdd+"tr &WIREPT=n7ox_"+aaaammdd+"pt &OUT=vol_total_new @ZBASE=-200 @NOSID=1 @DTM=0");		
+	oDmApp.ParseCommand("output &IN=vol_total_new *F1=LENTE *F2=VOLUME *F3=NUMTRI @CSV=1 @NODD=0 @DPLACE=-1 @IMPLICIT=0 "+" 'vol_n7ox_"+aaaammdd+".csv'");		
+	oDmApp.ParseCommand("trivol &WIRETR=n7ox_"+aaaammdd+"tr &WIREPT=n7ox_"+aaaammdd+"pt &OUT=_TEMP_vol *ZONE=LENTE @ZBASE=-200 @NOSID=1 @DTM=0");		
+ 	oDmApp.ParseCommand("MGSORT &IN=_TEMP_vol &OUT=vol_n7ox_"+aaaammdd+"_LENTE *KEY1=LENTE @ORDER=1");		
+	oDmApp.ParseCommand("output &IN=vol_n7ox_"+aaaammdd+"_LENTE *F1=LENTE *F2=VOLUME *F3=NUMTRI @CSV=1 @NODD=0 @DPLACE=-1 @IMPLICIT=0 "+" 'vol_n7ox_"+aaaammdd+"_LENTE.csv'");		
+	oDmApp.ParseCommand("trivol &WIRETR="+wtr.value+" &WIREPT="+wpt.value+" &OUT=vol_"+wtr.value+" @ZBASE=-200 @NOSID=1 @DTM=0");		
+	oDmApp.ParseCommand("output &IN=vol_"+wtr.value+" *F1=LENTE *F2=VOLUME *F3=NUMTRI @CSV=1 @NODD=0 @DPLACE=-1 @IMPLICIT=0 "+" 'vol_"+wtr.value+".csv'");		
+	oDmApp.ParseCommand("trivol &WIRETR="+wtr.value+" &WIREPT="+wpt.value+" &OUT=_TEMP_vol *ZONE=LENTE @ZBASE=-200 @NOSID=1 @DTM=0");		
+ 	oDmApp.ParseCommand("MGSORT &IN=_TEMP_vol &OUT=vol_"+wtr.value+"_LENTE *KEY1=LENTE @ORDER=1");		
+	oDmApp.ParseCommand("output &IN=vol_"+wtr.value+"_LENTE *F1=LENTE *F2=VOLUME *F3=NUMTRI @CSV=1 @NODD=0 @DPLACE=-1 @IMPLICIT=0 "+" 'vol_"+wtr.value+"_LENTE.csv'");		
+	}
+	else{
+	oDmApp.ParseCommand("addtri &WIRETR1=_temp_tt2tr &WIREPT1=_temp1ttpt &WIRETR2=_temp_LENTE2tr &WIREPT2=_temp_LENTE2pt &WIRETROU=_temp_ad1tr  &WIREPTOU=_temp_ad1pt");
+	oDmApp.ParseCommand("addtri &WIRETR1=_temp_ad1tr &WIREPT1=_temp_ad1pt &WIRETR2=_temp_LENTE1tr &WIREPT2=_temp_LENTE1pt &WIRETROU=_temp_ad2tr  &WIREPTOU=_temp_ad2pt");
+
+	oDmApp.ParseCommand("append &IN1=_temp_tt2st &IN2=_temp2_checkst &OUT=_temp_ad1ST @SEQUENCE=0 @PROTODD=0 @PRINT=0");
+	oDmApp.ParseCommand("append &IN1=_temp_ad1ST &IN2=_temp1_checkst &OUT=_temp_ad2ST @SEQUENCE=0 @PROTODD=0 @PRINT=0");
+	oDmApp.ParseCommand("checkit &IN=_temp_ad2ST &OUT=_temp_ck");
+	oDmApp.ParseCommand("MGSORT &IN=_temp_ck &OUT=n7ox_"+aaaammdd+"st *KEY1=MINE *KEY2=SETOR *KEY3=SERIE *KEY4=OREBODY *KEY5=LENTE @ORDER=1");		
+	oDmApp.ParseCommand("inpfil  &OUT=teste1      @PRINT=1 "+" '' "+" 'SREFNUM' "+" 'A' "+" '8' "+" 'Y' "+" 'CUT_MOD' "+" 'SMETHOD' "+" 'A' "+" '8' "+" 'Y' "+" 'CUT_MOD' "+" 'SDIST1'  "+" 'N' "+" 'Y' "+" '24' "+" 'SDIST2'  "+" 'N' "+" 'Y' "+" '39' "+" 'SDIST3'  "+" 'N' "+" 'Y' "+" '3.5' "+" 'SANGLE1'  "+" 'N' "+" 'Y' "+" '35' "+" 'SANGLE2'  "+" 'N' "+" 'Y' "+" '22' "+" 'SANGLE3'  "+" 'N' "+" 'Y' "+" '-56' "+" 'SAXIS1'  "+" 'N' "+" 'Y' "+" '3' "+" 'SAXIS2'  "+" 'N' "+" 'Y' "+" '1' "+" 'SAXIS3'  "+" 'N' "+" 'Y' "+" '2' "+" 'OCTMETH'  "+" 'N' "+" 'Y' "+" '1' "+" 'MINOCT'  "+" 'N' "+" 'Y' "+" '2' "+" 'MINPEROC'  "+" 'N' "+" 'Y' "+" '1' "+" 'MAXPEROC'  "+" 'N' "+" 'Y' "+" '40' "+" 'MINNUM1'  "+" 'N' "+" 'Y' "+" '8' "+" 'MAXNUM1'  "+" 'N' "+" 'Y' "+" '80' "+" 'SVOLFAC2'  "+" 'N' "+" 'Y' "+" '2' "+" 'MINNUM2'  "+" 'N' "+" 'Y' "+" '8' "+" 'MAXNUM2'  "+" 'N' "+" 'Y' "+" '80' "+" 'SVOLFAC3'  "+" 'N' "+" 'Y' "+" '3' "+" 'MINNUM3'  "+" 'N' "+" 'Y' "+" '8' "+" 'MAXNUM3'  "+" 'N' "+" 'Y' "+" '80' "+" 'MAXKEY'  "+" 'N' "+" 'Y' "+" '0' "+" '!' "+" 'y' "+" '' "+" '"+_temp_mine+","+aaaammdd+",1,2,0,0,0,0,3,1,2,0,1,1,12,4,12,1.5,4,12,2.25,12,2' "+" '!' ");
+
+	oDmApp.ParseCommand("inpfil &OUT=_temp_ad_fieldlst @PRINT=1 "+		
+	 " '' "+	
+	 " 'FIELDNAM'"+	
+	 " 'A'"+	
+	 " '24'"+	
+	 " 'Y'"+	
+	 " 'A' "+	
+	 " '!' "+	
+	 " 'y' "+	
+	 " '' "+	
+	 " 'ROCKTYPE' "+	
+	 " 'LAYERS' "+	
+	 " 'LTYPE' "+	
+	 " 'id' "+	
+	 " 'THICKNES' "+	
+	 " 'ANGLE' "+	
+	 " 'XDAT001' "+	
+	 " 'XDAT002' "+	
+	 " 'XDAT003' "+	
+	 " 'XDAT004' "+	
+	 " 'XDAT005' "+	
+	 " 'XDAT006' "+	
+	 " 'XDAT007' "+	
+	 " 'XDAT008' "+	
+	 " 'XDAT009' "+	
+	 " 'XDAT010' "+	
+	 " 'XDAT011' "+	
+	 " 'XDAT012' "+	
+	 " 'XDAT013' "+	
+	 " 'XDAT014' "+	
+	 " 'XDAT015' "+	
+	 " 'XDAT016' "+	
+	 " 'XDAT017' "+	
+	 " 'XDAT018' "+	
+	 " 'CROSSOVR' "+	
+	 " 'BLOCKID' "+	
+	 " 'LSTYLE' "+	
+	 " 'SYMBOL' "+	
+	 " 'secao' "+	
+	 "'FILENAME'"+	
+	 " '!' ");	
+	oDmApp.ParseCommand("seldel &IN=_temp_ad2tr &FIELDLST=_temp_ad_fieldlst &OUT=_temp1tr *F1=ALVO  *FIELDNAM=FIELDNAM @KEEPALL=0");		
+ 	oDmApp.ParseCommand("MGSORT &IN=_temp1tr &OUT=_temp_totaltr *KEY1=MINE *KEY2=SETOR *KEY3=SERIE *KEY4=OREBODY *KEY5=LENTE @ORDER=1");		
+	oDmApp.ParseCommand("chktri &WIRETRIN=_temp_totaltr &WIREPTIN=_temp_ad2pt &WIRETROU=n7ox_"+aaaammdd+"tr &WIREPTOU=n7ox_"+aaaammdd+"pt @REMDUPID=0");	
+	oDmApp.ParseCommand("trivol &WIRETR=n7ox_"+aaaammdd+"tr &WIREPT=n7ox_"+aaaammdd+"pt &OUT=vol_total_new @ZBASE=-200 @NOSID=1 @DTM=0");		
+	oDmApp.ParseCommand("output &IN=vol_total_new *F1=LENTE *F2=VOLUME *F3=NUMTRI @CSV=1 @NODD=0 @DPLACE=-1 @IMPLICIT=0 "+" 'vol_n7ox_"+aaaammdd+".csv'");		
+	oDmApp.ParseCommand("trivol &WIRETR=n7ox_"+aaaammdd+"tr &WIREPT=n7ox_"+aaaammdd+"pt &OUT=_TEMP_vol *ZONE=LENTE @ZBASE=-200 @NOSID=1 @DTM=0");		
+ 	oDmApp.ParseCommand("MGSORT &IN=_TEMP_vol &OUT=vol_n7ox_"+aaaammdd+"_LENTE *KEY1=LENTE @ORDER=1");		
+	oDmApp.ParseCommand("output &IN=vol_n7ox_"+aaaammdd+"_LENTE *F1=LENTE *F2=VOLUME *F3=NUMTRI @CSV=1 @NODD=0 @DPLACE=-1 @IMPLICIT=0 "+" 'vol_n7ox_"+aaaammdd+"_LENTE.csv'");		
+	oDmApp.ParseCommand("trivol &WIRETR="+wtr.value+" &WIREPT="+wpt.value+" &OUT=vol_"+wtr.value+" @ZBASE=-200 @NOSID=1 @DTM=0");		
+	oDmApp.ParseCommand("output &IN=vol_"+wtr.value+" *F1=LENTE *F2=VOLUME *F3=NUMTRI @CSV=1 @NODD=0 @DPLACE=-1 @IMPLICIT=0 "+" 'vol_"+wtr.value+".csv'");		
+	oDmApp.ParseCommand("trivol &WIRETR="+wtr.value+" &WIREPT="+wpt.value+" &OUT=_TEMP_vol *ZONE=LENTE @ZBASE=-200 @NOSID=1 @DTM=0");		
+ 	oDmApp.ParseCommand("MGSORT &IN=_TEMP_vol &OUT=vol_"+wtr.value+"_LENTE *KEY1=LENTE @ORDER=1");		
+	oDmApp.ParseCommand("output &IN=vol_"+wtr.value+"_LENTE *F1=LENTE *F2=VOLUME *F3=NUMTRI @CSV=1 @NODD=0 @DPLACE=-1 @IMPLICIT=0 "+" 'vol_"+wtr.value+"_LENTE.csv'");		
+	}
+	}
+	else{
+	oDmApp.ParseCommand("addtri &WIRETR1=_temp_tt1tr &WIREPT1=_temp1ttpt &WIRETR2=_temp_lente1tr &WIREPT2=_temp_lente1pt &WIRETROU=_temp_ad1tr  &WIREPTOU=_temp_ad1pt");
+
+	oDmApp.ParseCommand("append &IN1=_temp_tt1st &IN2=_temp1_checkst &OUT=_temp_ad1ST @SEQUENCE=0 @PROTODD=0 @PRINT=0");
+	oDmApp.ParseCommand("checkit &IN=_temp_ad1ST &OUT=_temp_ck");
+	oDmApp.ParseCommand("MGSORT &IN=_temp_ck &OUT=n7ox_"+aaaammdd+"st *KEY1=MINE *KEY2=SETOR *KEY3=SERIE *KEY4=OREBODY *KEY5=LENTE @ORDER=1");		
+
+	oDmApp.ParseCommand("inpfil &OUT=_temp_ad_fieldlst @PRINT=1 "+		
+	 " '' "+	
+	 " 'FIELDNAM'"+	
+	 " 'A'"+	
+	 " '24'"+	
+	 " 'Y'"+	
+	 " 'A' "+	
+	 " '!' "+	
+	 " 'y' "+	
+	 " '' "+	
+	 " 'ROCKTYPE' "+	
+	 " 'LAYERS' "+	
+	 " 'LTYPE' "+	
+	 " 'id' "+	
+	 " 'THICKNES' "+	
+	 " 'ANGLE' "+	
+	 " 'XDAT001' "+	
+	 " 'XDAT002' "+	
+	 " 'XDAT003' "+	
+	 " 'XDAT004' "+	
+	 " 'XDAT005' "+	
+	 " 'XDAT006' "+	
+	 " 'XDAT007' "+	
+	 " 'XDAT008' "+	
+	 " 'XDAT009' "+	
+	 " 'XDAT010' "+	
+	 " 'XDAT011' "+	
+	 " 'XDAT012' "+	
+	 " 'XDAT013' "+	
+	 " 'XDAT014' "+	
+	 " 'XDAT015' "+	
+	 " 'XDAT016' "+	
+	 " 'XDAT017' "+	
+	 " 'XDAT018' "+	
+	 " 'CROSSOVR' "+	
+	 " 'BLOCKID' "+	
+	 " 'LSTYLE' "+	
+	 " 'SYMBOL' "+	
+	 " 'secao' "+	
+	 "'FILENAME'"+	
+	 " '!' ");	
+	oDmApp.ParseCommand("seldel &IN=_temp_ad1tr &FIELDLST=_temp_ad_fieldlst &OUT=_temp1tr *F1=ALVO  *FIELDNAM=FIELDNAM @KEEPALL=0");		
+ 	oDmApp.ParseCommand("MGSORT &IN=_temp1tr &OUT=_temp_totaltr *KEY1=MINE *KEY2=SETOR *KEY3=SERIE *KEY4=OREBODY *KEY5=LENTE @ORDER=1");		
+	oDmApp.ParseCommand("chktri &WIRETRIN=_temp_totaltr &WIREPTIN=_temp_ad1pt &WIRETROU=n7ox_"+aaaammdd+"tr &WIREPTOU=n7ox_"+aaaammdd+"pt @REMDUPID=0");	
+	oDmApp.ParseCommand("trivol &WIRETR=n7ox_"+aaaammdd+"tr &WIREPT=n7ox_"+aaaammdd+"pt &OUT=vol_total_new @ZBASE=-200 @NOSID=1 @DTM=0");		
+	oDmApp.ParseCommand("output &IN=vol_total_new *F1=LENTE *F2=VOLUME *F3=NUMTRI @CSV=1 @NODD=0 @DPLACE=-1 @IMPLICIT=0 "+" 'vol_n7ox_"+aaaammdd+".csv'");		
+	oDmApp.ParseCommand("trivol &WIRETR=n7ox_"+aaaammdd+"tr &WIREPT=n7ox_"+aaaammdd+"pt &OUT=_TEMP_vol *ZONE=LENTE @ZBASE=-200 @NOSID=1 @DTM=0");		
+ 	oDmApp.ParseCommand("MGSORT &IN=_TEMP_vol &OUT=vol_n7ox_"+aaaammdd+"_LENTE *KEY1=LENTE @ORDER=1");		
+	oDmApp.ParseCommand("output &IN=vol_n7ox_"+aaaammdd+"_LENTE *F1=LENTE *F2=VOLUME *F3=NUMTRI @CSV=1 @NODD=0 @DPLACE=-1 @IMPLICIT=0 "+" 'vol_n7ox_"+aaaammdd+"_LENTE.csv'");		
+	oDmApp.ParseCommand("trivol &WIRETR="+wtr.value+" &WIREPT="+wpt.value+" &OUT=vol_"+wtr.value+" @ZBASE=-200 @NOSID=1 @DTM=0");		
+	oDmApp.ParseCommand("output &IN=vol_"+wtr.value+" *F1=LENTE *F2=VOLUME *F3=NUMTRI @CSV=1 @NODD=0 @DPLACE=-1 @IMPLICIT=0 "+" 'vol_"+wtr.value+".csv'");		
+	oDmApp.ParseCommand("trivol &WIRETR="+wtr.value+" &WIREPT="+wpt.value+" &OUT=_TEMP_vol *ZONE=LENTE @ZBASE=-200 @NOSID=1 @DTM=0");		
+ 	oDmApp.ParseCommand("MGSORT &IN=_TEMP_vol &OUT=vol_"+wtr.value+"_LENTE *KEY1=LENTE @ORDER=1");		
+	oDmApp.ParseCommand("output &IN=vol_"+wtr.value+"_LENTE *F1=LENTE *F2=VOLUME *F3=NUMTRI @CSV=1 @NODD=0 @DPLACE=-1 @IMPLICIT=0 "+" 'vol_"+wtr.value+"_LENTE.csv'");		
+	
+	}
+	}
+	}
+	catch(e) {
+		alert("Failed\nReason: " + e.description);
+	}	
+	
+	
+
+	
+// LIMPA TODOS OS MODELOS TEMPORÁRIOS 
+oDmApp.ParseCommand("dir &OUT=found {_temp?}");
+oDmApp.ParseCommand("delete &IN=found @CONFIRM=0");   
+
+
+	
+
+alert("Rodou")
+
+}
+</SCRIPT>
+</HEAD>
+<BODY onload="AutoConnect();" onunload="oDmApp = null;oScript = null;">
+<div>
+<table border="0" cellpadding="5" cellspacing="0">
+<tr>
+<td><b>Lentes N7 - Vermelhos Sul</b>
+</td>
+<td><img src="C:/Program Files/Datamine/StudioRM//html/images/Datamine_rgb_small.png" id="logo" alt="Datamine" width="170" height="39" /></td>
+</td></tr>
+<tr>
+</tr>
+<td align="center" colspan="2"></td>
+
+ 		<tr align="left">
+		<td>
+		Lente
+		<td>
+	<select id="Select1" name="Select1" style="height: 22px" title="Define horizonte da mineralização">
+		<option value="1" selected>Sulfetado</option>
+		<option value="2">Oxidado</option>
+	</select>
+			</td>
+		</td>
+		</tr>
+
+		<tr align="left">
+		<td>
+     		<font color="#ff0000">WF Total
+			<td>
+			TR:&nbsp;<input id="wtr" type="text" size="12" value="..." name="wtr">&nbsp;<input id="abre_wtr" onClick="abre_wtr();" type="button" value="..." name="abre_wtr">
+			<br>
+			PT:&nbsp;<input id="wpt" type="text" size="12" value="..." name="wpt">&nbsp;<input id="abre_wpt" onClick="abre_wpt();" type="button" value="..." name="abre_wpt">
+			</td>
+		</td>
+		<tr align="left">
+		<td>
+			<font color="#000066">Strings Total</font>
+		</td>
+		<td>
+			<input value="..." id="stt" type="text" size="16" name="stt">&nbsp;<input id="open_stt" onClick="open_stt();" type="button" value="..." name="open_stt">
+		</td>
+		</tr>
+
+	<tr align="left">
+		<td>		
+			LENTE 1 </td> <td><input id="lente1" type="text" size="5" value="..." name="lente1">
+		</td>	</tr>
+	<tr align="left">
+		<td>
+			LENTE 2 <input type="checkbox" id="tem_mais1" name="tem_mais1" title="Lente adicional para edição"> 
+		</td>
+		<td>
+			<input id="lente2" type="text" size="5" value="..." name="lente2">
+		</td>	</tr>
+	<tr align="left">
+		<td>
+			LENTE 3 <input id="tem_mais2" type="checkbox" name="tem_mais2" title="Lente adicional para edição">
+		</td>
+		<td>
+			<input id="lente3" type="text" size="5" value="..." name="lente3">
+		</td>
+<tr>
+<td align="center" colspan="2">
+<input type="button" value="Separar" name="btnExecute" onclick="return btnExecute1_onclick()" style="width: 75px" />
+<hr></td>
+</tr>
+		
+	</tr>
+		<tr align="right">
+		<td>
+     		<font color="#ff0000">WF Atual Source 1
+			<td>
+			TR:&nbsp;<input id="wtr1" type="text" size="12" value="..." name="wtr1"><input id="abre_wtr1" onClick="abre_wtr1();" type="button" value="..." name="abre_wtr1">
+			<br>
+			PT:&nbsp;<input id="wpt1" type="text" size="12" value="..." name="wpt1"><input id="abre_wpt1" onClick="abre_wpt1();" type="button" value="..." name="abre_wpt1">
+			</td>
+		</td>
+		</tr>
+		<tr align="right">
+		<td>
+			<font color="#000066">Strings Source 1</font>
+		</td>
+		<td>
+			<input value="..." id="st1" type="text" size="16" name="st1"><input id="open_st1" onClick="open_st1();" type="button" value="..." name="open_st1">
+		</td>
+		</tr>
+	<tr align="right">
+		<td>
+     		<font color="#ff0000">WF Atual Source 2
+			<td>
+			TR:&nbsp;<input id="wtr2" type="text" size="12" value="..." name="wtr2"><input id="abre_wtr2" onClick="abre_wtr2();" type="button" value="..." name="abre_wtr2">
+			<br>
+			PT:&nbsp;<input id="wpt2" type="text" size="12" value="..." name="wpt2"><input id="abre_wpt2" onClick="abre_wpt2();" type="button" value="..." name="abre_wpt2">
+			</td>
+		</td>
+		</tr>
+		<tr align="right">
+		<td>
+			<font color="#000066">Strings Source 2</font>
+		</td>
+		<td>
+			<input value="..." id="st2" type="text" size="16" name="st2"><input id="open_st2" onClick="open_st2();" type="button" value="..." name="open_st2">
+		</td>
+		</tr>
+	</tr>	<tr align="right">
+		<td>
+     		<font color="#ff0000">WF Atual Source 3
+			<td>
+			TR:&nbsp;<input id="wtr3" type="text" size="12" value="..." name="wtr3"><input id="abre_wtr3" onClick="abre_wtr3();" type="button" value="..." name="abre_wtr3">
+			<br>
+			PT:&nbsp;<input id="wpt3" type="text" size="12" value="..." name="wpt3"><input id="abre_wpt3" onClick="abre_wpt3();" type="button" value="..." name="abre_wpt3">
+			</td>
+		</td>
+		</tr>
+		<tr align="right">
+		<td>
+			<font color="#000066">Strings Source 3</font>
+		</td>
+		<td>
+			<input value="..." id="st3" type="text" size="16" name="st3"><input id="open_st3" onClick="open_st3();" type="button" value="..." name="open_st3">
+		</td>
+		</tr>
+	
+<tr>
+<td align="center" colspan="2">
+<input type="button" value="Juntar" name="btnExecute" onclick="return btnExecute2_onclick()" style="width: 75px" />
+<hr></td>
+</tr>
+	
+</table>
+</div>
+</BODY>
+</HTML>
