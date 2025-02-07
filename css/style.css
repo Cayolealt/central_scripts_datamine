@@ -1,8 +1,6 @@
-body {
-    background: linear-gradient(135deg, #ffffff , #ffffff);
-    height:100vh;
-    margin: 0;
-    font-family: Arial, Helvetica, sans-serif;
+body{
+    font-family: 'minhafonte';
+    font-size: 13px;
 }
 
 .logo_ero_caraiba{
@@ -16,35 +14,34 @@ body {
 .lista_scripts{
     list-style-type: none;
     padding: 2px;
+    border-color: gray;
+    border-style: solid;
+    border-width: 1px;
 }
 .menu{
     width: 250px;
-
+    padding: 0px;
 }
 
-.lista_scripts li{
-    /* margin: 1px; */
-    /* padding: 15px; */
-    height: 35px;
-    /* border-radius: 5px; */
-    border-color: gray;
-    border-style: solid;
-    border-width: .5px;
+div .lista_scripts li{
+    height: 35px; 
+    border-bottom: 1px solid gray;
     background: linear-gradient(to bottom, #fbfaf9 5%, #dcd9d2 100%);
-    /* text-align: center; */
-    vertical-align: middle; 
+    display: flex;
+    align-items: center;
 }
 
 .lista_scripts a{
+    display: flex;
+    align-items: center;
+    height: 35px;
+    width: 250px;
     text-decoration: none;
     color: black;
 }
 
 .lista_scripts li:hover{
-    border-left-style: solid;
-    border-left-color: #f6872e;
-    border-left-width: 10px;
-    background-color: rgba(222, 222, 220, 20%)
+    background: #d4d5d8;
 }
 
 
