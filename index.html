@@ -3,8 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Central Scripts - GEGEM</title>
+    <title>Central Scripts Datamine</title>
+    
     <link rel="stylesheet" type= "text/css" href="css\style.css">
+    
+    <script src="js/javascript.js"></script>
 
 </head>
 <body>
@@ -16,34 +19,35 @@
             Configurações
         </section>
         <section id="section_configuracao">
-            Configurações com botões, etc.
+            <table id="add_script">
+                <tr>
+                    <td>Nome do Script</td>
+                    <td><input id="nome_script" type="text"></td>
+                </tr>
+                <tr>
+                    <td>Path do Script</td>
+                    <td><input id="path_script" type="text"></td>
+                    <td><button>...</button></td>
+                </tr>
+                <tr>
+                    <td colspan="2" align="right"><button onclick="script.adicionar()">Adicionar Script</button></td>
+                </tr>
+            </table>
         </section>
         <section id="barra_inferior_header">
            
         </section>
     </header>
-    <!-- <div class="header">
-        <img class="logo_ero_caraiba" src="images\logo_ero_caraiba.png"></tr>
-    </div> -->
-    <div class="menu">
-        <ul class="lista_scripts">
-            <li><a href="D:\02 - SCRIPTS\Script_Insitu_exec\index.htm">Reconciliação de Lavra</a></li>
-            <li><a href="#">Levantamentos Topográficos</a></li>
-            <li><a href="#">Estimativa de Curto Prazo</a></li>
-            <li><a href="#">CutMerge</a></li>
-            <li>Script1</li>
-            <li>Script1</li>
-            <li>Script1</li>
-            <li>Script1</li>
-            <li>Script1</li>
-            <li>Script1</li>
-            <li>Script1</li>
-            <li>Script1</li>
-            <li>Script1</li>
-            <li>Script1</li>
-            <li>Script1</li>
-            <li></li>
-        </ul>
+    <div class="container">
+        <table class="lista_scripts">
+            <tr>
+                <td><a href="#">script1</a></td>
+                <td>
+                    <img src="img/botao-editar.png">
+                    <img src="img/remover-arquivo.png">
+                </td>
+            </tr>
+        </table>
     </div>
 
     <div class="footer">
