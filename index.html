@@ -11,15 +11,12 @@
 
 </head>
 <body>
+
     <header>
-        <section id="section_nome_superior">
-            Central Script Datamine
-        </section>
-        <section id="section_nome_configuracao">
-            Configurações
-        </section>
-        <section id="section_configuracao">
-            <table id="add_script">
+        <div id="nome_superior"><span>Central Script Datamine</span></div>
+        <div id="nome_configuracao"><span>Configurações</span></div>
+        <div id="configuracao">
+            <table>
                 <tr>
                     <td>Nome do Script</td>
                     <td><input id="nome_script" type="text"></td>
@@ -30,23 +27,31 @@
                     <td><button>...</button></td>
                 </tr>
                 <tr>
-                    <td colspan="2" align="right"><button onclick="script.adicionar()">Adicionar Script</button></td>
+                    <td colspan="2" align="right"><button id="btn_config" onclick="script.adicionar()">Adicionar Script</button></td>
                 </tr>
             </table>
-        </section>
-        <section id="barra_inferior_header">
-           
-        </section>
+        </div>
+        <div id="barra_inferior_header"></div>
     </header>
+
     <div class="container">
-        <table class="lista_scripts">
-            <tr>
-                <td><a href="#">script1</a></td>
-                <td>
-                    <img src="img/botao-editar.png">
-                    <img src="img/remover-arquivo.png">
-                </td>
-            </tr>
+        <table>
+            <tbody id="tbody">
+                <tr>
+                    <td><a href="#">script1</a></td>
+                    <td class="images">
+                        <img src="img/botao-editar.png">
+                        <img src="img/remover-arquivo.png">
+                    </td>
+                </tr>
+                <tr>
+                    <td><a href="#">script1</a></td>
+                    <td class="images">
+                        <img src="img/botao-editar.png">
+                        <img src="img/remover-arquivo.png">
+                    </td>
+                </tr>
+            </tbody>
         </table>
     </div>
 
