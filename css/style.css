@@ -3,9 +3,20 @@ body{
     font-weight: 900;
     font-size: 12px;
 }
+button{
+    font-size: 14px;
+    border: 1px solid black;
+    height: 25px;
+    background-color: #ccd5f0;
+}
+button:hover{
+
+    background-color: #e5ebff;
+}
+
 /* ==================================== INICIO DO HEADER ==================================*/
 header{
-    width: 330px;
+    width: 400px;
     height: 160px;
     margin: 0px;
     border: 1px gray dashed;   
@@ -26,6 +37,12 @@ header{
 #configuracao{
     height: 100px;
 }
+#nome_script, #path_script{
+    width: 230px;
+    border: 1px solid grey;
+    height: 20px;
+    font-size: 14px;
+}
 
 #barra_inferior_header{
     height: 10px;
@@ -38,34 +55,30 @@ header{
 /* ==================================== INICIO DO CONTAINER ==================================*/
 
 .container{
-    width: 334px;
-    /* border: 1px solid red; */
+    width: 400px;
+    border: 1px solid gray;
 }
 
 .container table tr{
-    background: linear-gradient(to bottom, #fbfaf9 5%, #dcd9d2 100%);
+    /* background: linear-gradient(to bottom, #ffffff 5%, #dcd9d2 100%); */
     height: 25px;
-
-}
-.container table td{
-    border-bottom: 1px gray solid; 
-   
+    
 }
 
+.container table tr:hover{
+    background:#ccd5f0;
+}
 
 .container table tr a{
     display: flex;
-    align-items: center;
+    /* align-items: center; */
     height: 25px;
-    width: 270px;
+    width: 320px;
     text-decoration: none;
     color: black;
       
 }
 
-.container table tr a:hover{
-    background: #d4d5d8;
-}
 
 .images{
     width: 75px;
