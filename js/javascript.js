@@ -1,43 +1,76 @@
 /**
- * Classe responsável por gerenciar scripts personalizados (CRUD) salvos no localStorage.
+ * Cria ou atualiza um cookie no navegador com um valor informado e tempo de expiração em dias
+ * @param {string} nome - Nome do cookie
+ * @param {string} valor - Valor a ser armazenado no cookie
+ * @param {number} dias - Quantidade de dias até o cookie expirar
+ */
+function setCookie(nome, valor, dias) {
+    var d = new Date()
+    d.setTime(d.getTime() + (dias*24*60*60*1000))
+    var expires = "expires=" + d.toUTCString()
+    document.cookie = nome + "=" + encodeURIComponent(valor) + ";" + expires + ";path=/"
+}
+
+/**
+ * Recupera o valor de um cookie pelo nome
+ * @param {string} nome - Nome do cookie a ser recuperado
+ * @returns {string} Valor do cookie ou string vazia caso não exista
+ */
+function getCookie(nome) {
+    var name = nome + "=";
+    var ca = document.cookie.split(';')
+    for(var i = 0; i < ca.length; i++) {
+        var c = ca[i]
+        while (c.charAt(0) == ' ') c = c.substring(1)
+        if (c.indexOf(name) == 0) return decodeURIComponent(c.substring(name.length, c.length))
+    }
+    return ""
+}
+
+/**
+ * Classe responsável por gerenciar scripts personalizados (CRUD)
  * @constructor
  */
 function Script(){
     this.id = 1
     this.arrayScript = []
     this.editId = null
-    this.carregarDoLocalStorage()
+    this.carregarDoCookie()
     this.listaTabela()
     
 }
+
 /**
- * Salva o array de scripts e o próximo ID no localStorage do navegador.
- * @function salvarNoLocalStorage
+ * Salva a lista de scripts e o id atual no cookie do navegador
  */
-Script.prototype.salvarNoLocalStorage = function() {
-    localStorage.setItem('listaScripts', JSON.stringify(this.arrayScript));
-    localStorage.setItem('proximoId', this.id); // Para garantir que o id nunca volte pro 1
+Script.prototype.salvarNoCookie = function() {
+    setCookie('arrayScript', JSON.stringify(this.arrayScript), 365) // Salva por 1 ano
+    setCookie('scriptId', this.id, 365)
+};
+
+/**
+ * Carrega a lista de scripts e o id atual a partir dos cookies do navegador,
+ * caso existam, atualizando os dados da classe.
+ */
+Script.prototype.carregarDoCookie = function() {
+    var s = getCookie('arrayScript')
+    if (s) {
+        this.arrayScript = JSON.parse(s)
+        this.id = parseInt(getCookie('scriptId'), 10) || 1
+    }
 }
 
 /**
- * Carrega o array de scripts e o próximo ID salvos no localStorage do navegador.
- * Atualiza os valores locais caso existam no armazenamento.
- * @function carregarDoLocalStorage
- */
-Script.prototype.carregarDoLocalStorage = function() {
-    const lista = localStorage.getItem('listaScripts');
-    const proximoId = localStorage.getItem('proximoId');
-    if (lista) {
-        this.arrayScript = JSON.parse(lista);
-    }
-    if (proximoId) {
-        this.id = parseInt(proximoId);
-    }
-}
-/**
- * Adiciona um novo script ou atualiza um existente
- * Faz validação dos campos, executa a ação apropriada e atualiza a tabela e os campos.
+ * Adiciona um novo script ou atualiza um existente.
+ *
+ * - Valida os campos de entrada do formulário.
+ * - Caso esteja em modo de edição, atualiza o script correspondente, senão adiciona um novo.
+ * - Salva a lista de scripts no cookie para persistência.
+ * - Atualiza a tabela de visualização e limpa os campos do formulário ao final.
+ *
  * @function adicionar
+ * @memberof Script
+ * @returns {void}
  */
 Script.prototype.adicionar = function(){
 
@@ -49,9 +82,10 @@ Script.prototype.adicionar = function(){
             this.salvarScript(script)
         }else{
             this.atualizar(this.editId, script)
+            
         }
     }
-
+    this.salvarNoCookie()
     this.listaTabela()
     this.limparDados()   
 }
@@ -65,6 +99,7 @@ Script.prototype.adicionar = function(){
  * - Reseta a propriedade 'editId', finalizando o modo de edição atual.
  *
  * @function limparDados
+ * @memberof Script
  */
 
 Script.prototype.limparDados = function() {
@@ -151,6 +186,7 @@ Script.prototype.listaTabela = function(){
  * 
  * @function prepararEditar
  * @param {Object} dados - Objeto do script a ser editado, contendo ao menos { id, nomeScript, path }.
+ * @memberof Script
  */
 Script.prototype.prepararEditar = function(dados){
     this.editId = dados.id
@@ -161,24 +197,23 @@ Script.prototype.prepararEditar = function(dados){
 
 /**
  * Adiciona um novo script ao array de scripts e incrementa o ID sequencial.
- * Faz o salvamento no localStorage ao final.
  * 
  * @function salvarScript
  * @param {Object} script - Objeto representando o script a ser salvo (com id, nomeScript e path).
+ * @memberof Script
  */
 Script.prototype.salvarScript = function(script){
     this.arrayScript.push(script)
     this.id++
-    this.salvarNoLocalStorage()
 }
 
 /**
  * Atualiza um script existente no array com base no ID fornecido.
- * Também salva o resultado atualizado no localStorage.
  *
  * @function atualizar
  * @param {number} id - ID do script a ser atualizado.
  * @param {Object} script - Novos dados do script { nomeScript, path }.
+ * @memberof Script
  */
 Script.prototype.atualizar = function(id, script){
     for (let i = 0; i< this.arrayScript.length; i++){
@@ -187,14 +222,15 @@ Script.prototype.atualizar = function(id, script){
             this.arrayScript[i].path = script.path
         }
     }
-    this.salvarNoLocalStorage()
 }
 
 /**
  * Lê os dados do formulário HTML e retorna um objeto do tipo script.
  * 
  * @function lerDados
+ * @memberof Script
  * @returns {Object} Um objeto com id, nomeScript e path.
+ * 
  */
 Script.prototype.lerDados = function(){
     let script = {}
@@ -213,6 +249,7 @@ Script.prototype.lerDados = function(){
  * @function validaCampos
  * @param {Object} script - Objeto a ser validado.
  * @returns {boolean} True se válido, false caso contrário.
+ * @memberof Script
  */
 Script.prototype.validaCampos = function(script){
     let msg = ''
@@ -233,10 +270,10 @@ Script.prototype.validaCampos = function(script){
 
 /**
  * Remove um script do array e da tabela, com confirmação do usuário.
- * Atualiza o localStorage e a tabela após a remoção.
  * 
  * @function deletar
  * @param {number} id - ID do script a ser removido.
+ * @memberof Script
  */
 
 Script.prototype.deletar = function(id){
@@ -251,7 +288,7 @@ Script.prototype.deletar = function(id){
             }     
         }
     }
-    this.salvarNoLocalStorage()
+    this.salvarNoCookie()
     this.listaTabela()
     console.log(this.arrayScript)
 }
