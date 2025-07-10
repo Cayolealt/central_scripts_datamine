@@ -299,4 +299,4 @@ Script.prototype.deletar = function(id){
  */    
 window.onload = function () {
     window.script = new Script(); // Cria no escopo global se precisar acessar via HTML
-  }
+}
