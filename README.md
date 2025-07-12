@@ -61,13 +61,13 @@ O script é instanciado globalmente quando a página é carregada (`window.onloa
     *   Abra o Datamine STUDIO RM.
     *   Navegue até o menu principal, na aba HOME procure pelo botão SYSTEM do PROGRAM OPTIONS.
       <img width="1916" height="205" alt="image" src="https://github.com/user-attachments/assets/94ac734c-4670-4b2e-b45b-ec81657c4baa" />
-    *   Na janela de Options procure pela pasta ENVIRONMENT em seguida **Web Browser**
-    *   Configure a entrada de URL do **Default Customization Page** como caminho completo para o arquivo HTML que contém este script (ex: `D:\02 - SCRIPTS\central_scripts_gegem\index.html`).
-    *   Pressione OK
+    *   Na janela de Options procure pela pasta ENVIRONMENT em seguida Web Browser.
+    *   Configure a entrada de URL do Default Customization Page como caminho completo para o arquivo HTML que contém este script (ex: `D:\02 - SCRIPTS\central_scripts_gegem\index.html`).
+    *   Pressione OK.
       <img width="796" height="501" alt="image" src="https://github.com/user-attachments/assets/df69ef0b-9fb5-437a-a58b-867642e0d24c" />
 
 3.  **Adicionando seu Primeiro Script:**
-    *   Navegue até a aba **Customization**
+    *   Navegue até a aba Customization
     *   Na interface carregada, você verá campos para "Nome do Script" e "Path do Script".
     *   **Nome do Script:** Digite um nome amigável para o seu script (ex: "Relatório de Reservas", "Cálculo de Desvio de Furo").
     *   **Path do Script:** Insira o caminho completo para o arquivo index.html do seu script ou o respectivo arquivo html de inicialização (ex: URL `D:\02 - SCRIPTS\Relatorio_reservas\index.html`).
