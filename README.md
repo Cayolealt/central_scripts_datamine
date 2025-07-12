@@ -2,17 +2,17 @@
 
 ## ✨ Visão Geral
 
-Este projeto é um gerenciador de scripts customizados desenvolvido em JavaScript para ser utilizado dentro do software **Datamine STUDIO RM**, especificamente através da sua funcionalidade de rotina de scripts. O principal objetivo é centralizar, organizar e facilitar o acesso a múltiplos scripts que um usuário (como um geólogo ou engenheiro de minas) possa utilizar em sua rotina diária no Datamine.
+Este projeto é um gerenciador de scripts customizados desenvolvido em JavaScript e HTML/CSS para ser utilizado dentro do software **Datamine STUDIO RM**, especificamente através da sua funcionalidade de rotina de scripts. O principal objetivo é centralizar, organizar e facilitar o acesso a múltiplos scripts que um usuário (como um geólogo ou engenheiro de minas) possa utilizar em sua rotina diária no Datamine.
 
 Ao invés de procurar e carregar scripts individualmente, esta ferramenta cria uma interface interativa diretamente no Datamine, permitindo adicionar, editar, visualizar e remover seus scripts com facilidade, otimizando o fluxo de trabalho e a produtividade.
 
 ## �� Funcionalidades
 
-*   **Adição de Scripts:** Cadastre novos scripts informando um nome descritivo e o caminho (URL local ou remoto) do arquivo JavaScript/HTML.
+*   **Adição de Scripts:** Cadastre novos scripts informando um nome e o caminho (URL local ou remoto) do arquivo index.HTML do script.
 *   **Edição de Scripts:** Altere o nome ou o caminho de scripts já registrados.
 *   **Exclusão de Scripts:** Remova scripts que não são mais necessários da lista.
 *   **Visualização Centralizada:** Todos os scripts registrados são listados em uma tabela organizada, com links diretos para sua execução ou acesso.
-*   **Persistência de Dados:** Os dados dos scripts são salvos automaticamente no navegador (via cookies) e carregados ao reiniciar o Datamine STUDIO RM, garantindo que suas configurações sejam mantidas.
+*   **Persistência de Dados:** Os dados dos scripts são salvos automaticamente (via cookies) e carregados ao inicia/reiniciar o Datamine STUDIO RM direto na aba Customization, garantindo que suas configurações sejam mantidas.
 *   **Validação de Campos:** Garante que informações essenciais (nome e caminho do script) sejam fornecidas antes do cadastro.
 
 ## ⚙️ Como Funciona (Detalhes Técnicos)
@@ -59,27 +59,39 @@ O script é instanciado globalmente quando a página é carregada (`window.onloa
 
 2.  **Configuração no Datamine STUDIO RM:**
     *   Abra o Datamine STUDIO RM.
-    *   Navegue até a aba **"Customization"**.
-    *   No campo de entrada de URL, insira o caminho completo para o arquivo HTML que contém este script (ex: `C:\Users\SeuUsuario\Documents\DatamineScripts\index.html`).
-    *   Pressione Enter ou clique em carregar para que a interface seja exibida.
+    *   Navegue até o menu principal, na aba HOME procure pelo botão SYSTEM do PROGRAM OPTIONS.
+      <img width="1916" height="205" alt="image" src="https://github.com/user-attachments/assets/94ac734c-4670-4b2e-b45b-ec81657c4baa" />
+    *   Na janela de Options procure pela pasta ENVIRONMENT em seguida **Web Browser**
+    *   Configure a entrada de URL do **Default Customization Page** como caminho completo para o arquivo HTML que contém este script (ex: `D:\02 - SCRIPTS\central_scripts_gegem\index.html`).
+    *   Pressione OK
+      <img width="796" height="501" alt="image" src="https://github.com/user-attachments/assets/df69ef0b-9fb5-437a-a58b-867642e0d24c" />
 
 3.  **Adicionando seu Primeiro Script:**
+    *   Navegue até a aba **Customization**
     *   Na interface carregada, você verá campos para "Nome do Script" e "Path do Script".
     *   **Nome do Script:** Digite um nome amigável para o seu script (ex: "Relatório de Reservas", "Cálculo de Desvio de Furo").
-    *   **Path do Script:** Insira o caminho completo para o arquivo do seu script (ex: `C:\Datamine\Scripts\relatorio_reservas.js` ou uma URL `https://meu_servidor/script_analise.html`).
+    *   **Path do Script:** Insira o caminho completo para o arquivo index.html do seu script ou o respectivo arquivo html de inicialização (ex: URL `D:\02 - SCRIPTS\Relatorio_reservas\index.html`).
     *   Clique no botão **"Adicionar Script"**.
     *   O script aparecerá na tabela abaixo.
+      <img width="1918" height="1022" alt="image" src="https://github.com/user-attachments/assets/ab29646e-f05d-4ade-b97f-14acf5c5db4f" />
+      <img width="418" height="1017" alt="image" src="https://github.com/user-attachments/assets/e2cc4cff-c045-43f7-ba0a-f7730ab76932" />
 
-4.  **Editando um Script:**
+
+
+5.  **Editando um Script:**
     *   Clique no ícone de **edição (lápis)** ao lado do script que deseja modificar na tabela.
     *   Os campos do formulário serão preenchidos com os dados do script.
     *   Faça as alterações necessárias e clique no botão **"Atualizar"**.
+      <img width="422" height="740" alt="image" src="https://github.com/user-attachments/assets/5bfb4b36-fb97-4379-b4db-e1c8547685cd" />
 
-5.  **Excluindo um Script:**
+
+6.  **Excluindo um Script:**
     *   Clique no ícone de **excluir (lixeira)** ao lado do script que deseja remover.
     *   Confirme a exclusão quando solicitado.
+      <img width="422" height="740" alt="image" src="https://github.com/user-attachments/assets/f8204ca5-4dcd-49ac-8c2c-16e3c44216c6" />
 
-6.  **Acessando/Executando um Script:**
+
+7.  **Acessando/Executando um Script:**
     *   Na tabela, o nome de cada script será um link. Clicar neste link carregará o script correspondente no ambiente do navegador do Datamine, permitindo sua execução.
 
 ## 🌟 Benefícios para Geólogos em Mineradoras
